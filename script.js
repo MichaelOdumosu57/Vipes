@@ -39,12 +39,22 @@ import ReactDOM from 'react-dom';
         render() {
            const pictures = this.state.pictures;
            return ( pictures.map((pic) =>
-                  <div key = {pic} style = {{backgroundImage:pic}}></div>
+                  <div key = {pic} style = {{
+                      backgroundImage:pic,
+                      height: '90%',
+                      width:'100%',
+                      border:'1px solid black'
+                    }}></div>
                   )
                );
 
              }
   }
+
+
+    class Navigation extends React.Component {
+
+    }
 
 
 
