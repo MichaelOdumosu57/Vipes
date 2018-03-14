@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
         );
       }
     }
-    
+
     class Profession extends React.Component {
         render() {
            return (
@@ -19,7 +19,7 @@ import ReactDOM from 'react-dom';
                );
         }
     }
-    
+
     class Carousel_Item extends React.Component {
           constructor(props) {
             super(props);
@@ -38,20 +38,22 @@ import ReactDOM from 'react-dom';
           }
         render() {
            const pictures = this.state.pictures;
-           return (
-               {
-                pictures.map(nice) =>
-                    <div key = {nice} style = {{backgroundImage:nice}}>
-                    </div>
-                
-                }
+           return ( pictures.map((pic) =>
+                  <div key = {pic} style = {{backgroundImage:pic}}></div>
+                  )
                );
-        }
-    }
+
+             }
+  }
 
 
 
 ReactDOM.render(
   <Title sideface = "Overall"/>,
   document.getElementsByClassName('title')[0]
+);
+
+ReactDOM.render(
+  <Carousel_Item />,
+  document.getElementsByClassName('carousel')[0]
 );
