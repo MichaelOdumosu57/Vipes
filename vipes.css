@@ -18,9 +18,23 @@
     content: "\e080"
 }
 
+.glyphicon-chevron-left{
+
+    left: auto
+}
+
+.glyphicon-chevron-right {
+    /* right: -1em; */
+    /* for some reason the right css attribute is not functioning properly in mozilla, I will continue to reformat and see what we can do */
+    /* it seems you have to use embed -CSS In react */
+
+
+
+}
+
 .glyphicon {
-    position: relative;
-    top: 1px;
+    position: absolute;
+
     display: inline-block;
     font-family: 'bootstrap_font';
     font-style: normal;

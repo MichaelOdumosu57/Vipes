@@ -51,6 +51,7 @@ const menus = ["HOME",
            return ( pictures.map((pic) =>
                   <div key = {pic} style = {{
                       backgroundImage:pic,
+                      backgroundColor:"grey",
                       height: '90%',
                       width:'100%',
                       border:'2px solid black'
@@ -95,11 +96,28 @@ const menus = ["HOME",
       render (){
         return (
             <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}>
-              <span className = {"glyphicon glyphicon-chevron-left"} aria-hidden={"true"}></span>
+              <span className = {"glyphicon glyphicon-chevron-left"} aria-hidden={"true"} style =  {{
+                  top:"50%"
+
+              }}></span>
             </a>
         );
       }
     }
+
+    class RightArrow extends React.Component {
+      render (){
+        return (
+            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}>
+              <span className = {"glyphicon glyphicon-chevron-right"} aria-hidden={"true"} style = {{
+                  left:"93%",
+                  top:"53%"
+              }}></span>
+            </a>
+        );
+      }
+    }
+
 
 
 
@@ -121,4 +139,9 @@ ReactDOM.render(
 ReactDOM.render(
   <LeftArrow />,
   document.getElementsByClassName('LeftArrow')[0]
+);
+
+ReactDOM.render(
+  <RightArrow />,
+  document.getElementsByClassName('RightArrow')[0]
 );
