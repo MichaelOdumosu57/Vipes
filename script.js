@@ -42,7 +42,8 @@ const menus = ["HOME",
                                       "i_need_7.jpg",
                                       "i_need_8.jpg",
                                       "i_need_9.jpg"
-                                        ]
+                                    ],
+                          display:false
                             };
           }
         render() {
@@ -75,12 +76,29 @@ const menus = ["HOME",
          );
 
          return (
-                <div style = {{backgroundColor:"blue" , height:"252px", width:"186px"}}>
+                <div style = {{
+                  backgroundColor:"blue" ,
+                  height:"200px",
+                  width:"200px",
+                  position:"absolute",
+                  top:"65%",
+                  left:"30%"
+                }}>
                 {nav_menu}
                 </div>
              );
 
            }
+    }
+
+    class LeftArrow extends React.Component {
+      render (){
+        return (
+            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}>
+              <span className = {"glyphicon glyphicon-chevron-left"} aria-hidden={"true"}></span>
+            </a>
+        );
+      }
     }
 
 
@@ -98,4 +116,9 @@ ReactDOM.render(
 ReactDOM.render(
   <Navigation links ={ menus}  />,
   document.getElementsByClassName('navigation')[0]
+);
+
+ReactDOM.render(
+  <LeftArrow />,
+  document.getElementsByClassName('LeftArrow')[0]
 );

@@ -1,3 +1,39 @@
+/*  needed fonts */
+
+@font-face {
+  font-family: 'bootstrap_font';
+  src: url('./glyphicons-halflings-regular.woff2') format('woff2'),
+         url('./glyphicons-halflings-regular.woff') format('woff'),
+         url('./glyphicons-halflings-regular.ttf') format('truetype');
+
+  font-weight: normal;
+  font-style: normal;
+}
+
+.glyphicon-chevron-left:before {
+    content: "\e079"
+
+}
+.glyphicon-chevron-right:before {
+    content: "\e080"
+}
+
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'bootstrap_font';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    font-size:5em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+
+
+
 /*home page             */
 
             #index.title{
