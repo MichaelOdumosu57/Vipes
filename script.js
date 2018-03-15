@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const menus = ["HOME",
+               "MODEL",
+               "ACTOR",
+               "DANCER",
+               "DESIGNER",
+               "PHOTOGRAPHER",
+               "CONNECT"
+                                  ]
+
     class Title extends React.Component {
       render() {
         return (
@@ -43,7 +52,7 @@ import ReactDOM from 'react-dom';
                       backgroundImage:pic,
                       height: '90%',
                       width:'100%',
-                      border:'1px solid black'
+                      border:'2px solid black'
                     }}></div>
                   )
                );
@@ -53,7 +62,25 @@ import ReactDOM from 'react-dom';
 
 
     class Navigation extends React.Component {
+      render() {
+         const links = this.props.links;
+         const nav_menu  = (
+           <ul>
+           {links.map((link) =>
+             <li key={link}>
+               {link}
+             </li>
+           )}
+           </ul>
+         );
 
+         return (
+                <div style = {{backgroundColor:"blue" , height:"252px", width:"186px"}}>
+                {nav_menu}
+                </div>
+             );
+
+           }
     }
 
 
@@ -66,4 +93,9 @@ ReactDOM.render(
 ReactDOM.render(
   <Carousel_Item />,
   document.getElementsByClassName('carousel')[0]
+);
+
+ReactDOM.render(
+  <Navigation links ={ menus}  />,
+  document.getElementsByClassName('navigation')[0]
 );
