@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+
+
+
 const menus = ["HOME",
                "MODEL",
                "ACTOR",
@@ -33,15 +36,15 @@ const menus = ["HOME",
           constructor(props) {
             super(props);
             this.state = {pictures: [
-                                      "i_need_1.jpg",
-                                      "i_need_2.jpg",
-                                      "i_need_3.jpg",
-                                      "i_need_4.jpg",
-                                      "i_need_5.jpg",
-                                      "i_need_6.jpg",
-                                      "i_need_7.jpg",
-                                      "i_need_8.jpg",
-                                      "i_need_9.jpg"
+                                      './photos/beach.jpeg',
+                                      './photos/coffee-cups.jpeg',
+                                      './photos/conf.jpeg',
+                                      './photos/cupboard.jpeg',
+                                      './photos/dirty_shoes.jpeg',
+                                      './photos/horizon.jpeg',
+                                      './photos/lions.jpeg',
+                                      './photos/mushroom.jpeg',
+                                      './photos/sea.jpeg'
                                     ],
                           display:false
                             };
@@ -49,13 +52,11 @@ const menus = ["HOME",
         render() {
            const pictures = this.state.pictures;
            return ( pictures.map((pic) =>
-                  <div key = {pic} style = {{
-                      backgroundImage:pic,
-                      backgroundColor:"grey",
+                  <img key = {pic} src = {pic} style = {{
                       height: '90%',
                       width:'100%',
                       border:'2px solid black'
-                    }}></div>
+                    }}/>
                   )
                );
 

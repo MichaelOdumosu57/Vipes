@@ -13,6 +13,23 @@ module.exports = {
     },
     module :{
 
+        rules: [
+          {
+             test: /\.(png|jpg)$/,
+             use:[
+               {
+                 loader: 'url-loader',
+                 options: {
+                    limit:8192,
+                    fallback:'file-loader'
+
+                  }
+                }
+             ],
+             exclude:/node_modules/
+            }
+        ],
+
         rules:[
 
                 {
@@ -26,6 +43,8 @@ module.exports = {
             }
 
         ]
+
+
 
     }
 };
