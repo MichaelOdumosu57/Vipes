@@ -32,6 +32,20 @@ const menus = ["HOME",
         }
     }
 
+    function Carousel(WrappedCarousel,refreshRate) {
+        // this is a HOC (higher order component) which takes the carousel items and turns it to an actual carousel
+
+        return class extends React.Component {
+
+            render(){
+              return(
+                <WrappedCarousel/>
+                )
+            }
+        }
+
+    }
+
     class Carousel_Item extends React.Component {
           constructor(props) {
             super(props);
@@ -55,7 +69,8 @@ const menus = ["HOME",
                   <img key = {pic} src = {pic} style = {{
                       height: '90%',
                       width:'100%',
-                      border:'2px solid black'
+                      border:'2px solid black',
+                      position:'absolute'
                     }}/>
                   )
                );
