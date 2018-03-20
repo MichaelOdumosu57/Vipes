@@ -2,10 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 // import {numberParse} from 'dimension_parser'
 
-function numberParse(dimension){
-    dimension = parseFloat(dimension.split("p")[0])
-    return dimension;
-}
 
 var change_top;
 var change_left;
@@ -44,15 +40,22 @@ const menus = ["HOME",
       constructor(props) {
         super(props);
 
+
       }
 
 
             render(){
-              var img = this.props.children
-              console.log(img)
+              const image = this.props.children
+
+              image.map((img,index) =>
+                img.props.style.left = (numberParse(img.props.style.left) + browser_window.outerWidth * index).toString() + "px"
+              );
+              console.log(image)
+
+
 
               return(
-                this.props.children
+                    image
                 )
             }
 
