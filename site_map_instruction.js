@@ -29,8 +29,8 @@ function BrowserCheck()
 
             $(document).ready(function() {
                 console.log( $("meta").attr("content"))
-                var phone = $("meta").attr("content");
-                var tablet = $("meta").attr("content").split("=");
+                var phone = $("meta").eq(1).attr("content");
+                var tablet = $("meta").eq(1).attr("content").split("=");
                 var display_length = parseInt($("body").css("width").split("p")[0])
                 console.log($("body").css("width"))
 

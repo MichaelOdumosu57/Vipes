@@ -6,6 +6,18 @@ import ReactDOM from 'react-dom';
 var change_top;
 var change_left;
 
+const pictures = [
+                          './photos/beach.jpeg',
+                          './photos/coffee-cups.jpeg',
+                          './photos/conf.jpeg',
+                          './photos/cupboard.jpeg',
+                          './photos/dirty_shoes.jpeg',
+                          './photos/horizon.jpeg',
+                          './photos/lions.jpeg',
+                          './photos/mushroom.jpeg',
+                          './photos/sea.jpeg'
+                        ];
+
 const menus = ["HOME",
                "MODEL",
                "ACTOR",
@@ -45,17 +57,24 @@ const menus = ["HOME",
 
 
             render(){
-              const image = this.props.children
 
-              image.map((img,index) =>
-                img.props.style.left = (numberParse(img.props.style.left) + browser_window.outerWidth * index).toString() + "px"
-              );
-              console.log(image)
+              const top ="0px";
+              const left= "0px";
+
+              // pictures.map((img,index) =>
+              //
+              //   left = (numberParse(left) + browser_window.outerWidth * index).toString() + "px"
+              // );
+
 
 
 
               return(
-                    image
+
+
+                    pictures.map((img,index) =>
+                      <Carousel_Item top = {top} left = {(numberParse(left) + browser_window.outerWidth * index).toString() + "px"} key = {img} pic = {img}/>
+                    )
                 )
             }
 
@@ -65,53 +84,34 @@ const menus = ["HOME",
     class Carousel_Item extends React.Component {
           constructor(props) {
             super(props);
-            this.state = {pictures: [
-                                      './photos/beach.jpeg',
-                                      './photos/coffee-cups.jpeg',
-                                      './photos/conf.jpeg',
-                                      './photos/cupboard.jpeg',
-                                      './photos/dirty_shoes.jpeg',
-                                      './photos/horizon.jpeg',
-                                      './photos/lions.jpeg',
-                                      './photos/mushroom.jpeg',
-                                      './photos/sea.jpeg'
-                                    ],
+            this.state = {
                           display:false,
-                          top:"0px",
-                          left:"0px"
+
                             };
-            this.change_position =  this.change_position.bind(this)
+
           }
 
 
 
 
-        change_position () {
-          this.setState({
-            left:  (numberParse(change_left) + 50).toString() + "px"
-          })
-
-
-        }
 
 
         render() {
-           const pictures = this.state.pictures;
-           change_top = this.state.top;
-           change_left = this.state.left
+
+
            return (
-                  <Carousel location = {this.change_position } >
-                    {pictures.map((pic) =>
-                    <img key = {pic} src = {pic} style = {{
+
+
+                    <img  src = {this.props.pic} style = {{
                         height: '90%',
                         width:'100%',
                         border:'2px solid black',
                         position:'absolute',
-                        top:this.state.top,
-                        left:this.state.left
+                        top:this.props.top,
+                        left:this.props.left
                       }}/>
-                    )}
-                  </Carousel>
+
+
                );
 
              }
@@ -182,7 +182,7 @@ ReactDOM.render(
 );
 
 ReactDOM.render(
-  <Carousel_Item />,
+  <Carousel />,
   document.getElementsByClassName('carousel')[0]
 );
 
