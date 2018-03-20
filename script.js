@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import {numberParse} from 'dimension_parser'
 
+function numberParse(dimension){
+    dimension = parseFloat(dimension.split("p")[0])
+    return dimension;
+}
 
-
+var change_top;
+var change_left;
 
 const menus = ["HOME",
                "MODEL",
@@ -32,17 +38,24 @@ const menus = ["HOME",
         }
     }
 
-    function Carousel(WrappedCarousel,refreshRate) {
-        // this is a HOC (higher order component) which takes the carousel items and turns it to an actual carousel
 
-        return class extends React.Component {
+
+    class Carousel extends React.Component {
+      constructor(props) {
+        super(props);
+
+      }
+
 
             render(){
+              var img = this.props.children
+              console.log(img)
+
               return(
-                <WrappedCarousel/>
+                this.props.children
                 )
             }
-        }
+
 
     }
 
@@ -60,19 +73,42 @@ const menus = ["HOME",
                                       './photos/mushroom.jpeg',
                                       './photos/sea.jpeg'
                                     ],
-                          display:false
+                          display:false,
+                          top:"0px",
+                          left:"0px"
                             };
+            this.change_position =  this.change_position.bind(this)
           }
+
+
+
+
+        change_position () {
+          this.setState({
+            left:  (numberParse(change_left) + 50).toString() + "px"
+          })
+
+
+        }
+
+
         render() {
            const pictures = this.state.pictures;
-           return ( pictures.map((pic) =>
-                  <img key = {pic} src = {pic} style = {{
-                      height: '90%',
-                      width:'100%',
-                      border:'2px solid black',
-                      position:'absolute'
-                    }}/>
-                  )
+           change_top = this.state.top;
+           change_left = this.state.left
+           return (
+                  <Carousel location = {this.change_position } >
+                    {pictures.map((pic) =>
+                    <img key = {pic} src = {pic} style = {{
+                        height: '90%',
+                        width:'100%',
+                        border:'2px solid black',
+                        position:'absolute',
+                        top:this.state.top,
+                        left:this.state.left
+                      }}/>
+                    )}
+                  </Carousel>
                );
 
              }
