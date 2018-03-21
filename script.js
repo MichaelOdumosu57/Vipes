@@ -55,26 +55,42 @@ const menus = ["HOME",
 
       }
 
+            change_right() {
+                // {(numberParse(left) + browser_window.outerWidth * index).toString() + "px"}
+
+            }
+
 
             render(){
 
               const top ="0px";
               const left= "0px";
+              const active = 0;
+              const prev = -1;
+              const next = 1;
+              let present = null;
 
-              // pictures.map((img,index) =>
-              //
-              //   left = (numberParse(left) + browser_window.outerWidth * index).toString() + "px"
-              // );
+
+              const divs = pictures.map((img,index) =>
 
 
+                <Carousel_Item
+                   top = {top}
+                   left = {left}
+                   key = {img}
+                   pic = {img}
+                   screens ={index == 0 ? active : index == 1 ? next : index == pictures.length ? prev: 2} />
+              )
+
+              console.log(divs)
 
 
               return(
-
-
-                    pictures.map((img,index) =>
-                      <Carousel_Item top = {top} left = {(numberParse(left) + browser_window.outerWidth * index).toString() + "px"} key = {img} pic = {img}/>
-                    )
+                    <React.Fragment>
+                      {divs}
+                      <LeftArrow />,
+                      <RightArrow />
+                    </React.Fragment>
                 )
             }
 
@@ -104,7 +120,7 @@ const menus = ["HOME",
 
                     <img  src = {this.props.pic} style = {{
                         height: '90%',
-                        width:'100%',
+                        width:browser_window.outerWidth,
                         border:'2px solid black',
                         position:'absolute',
                         top:this.props.top,
@@ -152,7 +168,8 @@ const menus = ["HOME",
         return (
             <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}>
               <span className = {"glyphicon glyphicon-chevron-left"} aria-hidden={"true"} style =  {{
-                  top:"50%"
+                  top:"50%",
+                  color:"red"
 
               }}></span>
             </a>
@@ -166,7 +183,8 @@ const menus = ["HOME",
             <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}>
               <span className = {"glyphicon glyphicon-chevron-right"} aria-hidden={"true"} style = {{
                   left:"93%",
-                  top:"53%"
+                  top:"53%",
+                  color:"red"
               }}></span>
             </a>
         );
@@ -191,12 +209,12 @@ ReactDOM.render(
   document.getElementsByClassName('navigation')[0]
 );
 
-ReactDOM.render(
-  <LeftArrow />,
-  document.getElementsByClassName('LeftArrow')[0]
-);
+// ReactDOM.render(
+//   <LeftArrow />,
+//   document.getElementsByClassName('LeftArrow')[0]
+// );
 
-ReactDOM.render(
-  <RightArrow />,
-  document.getElementsByClassName('RightArrow')[0]
-);
+// ReactDOM.render(
+//   <RightArrow />,
+//   document.getElementsByClassName('RightArrow')[0]
+// );
