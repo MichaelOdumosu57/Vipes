@@ -27,6 +27,8 @@ const menus = ["HOME",
                "CONNECT"
                                   ]
 
+
+
     class Title extends React.Component {
       render() {
         return (
@@ -51,45 +53,78 @@ const menus = ["HOME",
     class Carousel extends React.Component {
       constructor(props) {
         super(props);
+        this.state = {
+                      display:false,
+                      left:"0px",
+                      divs:[]
 
+                        };
+
+        this.changeRight = this.changeRight.bind(this)
 
       }
 
-            change_right() {
+            changeRight(event) {
                 // {(numberParse(left) + browser_window.outerWidth * index).toString() + "px"}
+                {console.log(this.state.divs)}
 
+                this.setState({
+                  left:"1000px"
+                })
+                
+                this.setState({
+                  divs:pictures.map((img,index) =>
+
+
+                    <Carousel_Item
+                       top = {"0px"}
+                       left = {this.state.left}
+                       key = {img}
+                       pic = {img}
+                       screens ={index == 0 ? "active" : index == 1 ? "next" : index == pictures.length ? "prev": 2} />
+                  )
+                })
+
+
+            }
+
+            componentDidMount(){
+              this.setState({
+                divs:pictures.map((img,index) =>
+
+
+                  <Carousel_Item
+                     top = {"0px"}
+                     left = {this.state.left}
+                     key = {img}
+                     pic = {img}
+                     screens ={index == 0 ? "active" : index == 1 ? "next" : index == pictures.length ? "prev": 2} />
+                )
+
+              })
             }
 
 
             render(){
 
               const top ="0px";
-              const left= "0px";
               const active = 0;
               const prev = -1;
               const next = 1;
               let present = null;
 
 
-              const divs = pictures.map((img,index) =>
 
 
-                <Carousel_Item
-                   top = {top}
-                   left = {left}
-                   key = {img}
-                   pic = {img}
-                   screens ={index == 0 ? active : index == 1 ? next : index == pictures.length ? prev: 2} />
-              )
-
-              console.log(divs)
 
 
               return(
+
                     <React.Fragment>
-                      {divs}
+                      {this.state.divs}
                       <LeftArrow />,
-                      <RightArrow />
+                      <RightArrow click = {this.changeRight}  />
+
                     </React.Fragment>
                 )
             }
@@ -97,18 +132,27 @@ const menus = ["HOME",
 
     }
 
+
+
+
     class Carousel_Item extends React.Component {
           constructor(props) {
             super(props);
             this.state = {
-                          display:false,
+
+                          left:this.props.left
 
                             };
+
+            this.receiveRight = this.receiveRight.bind(this);
+
 
           }
 
 
+        receiveRight(){
 
+        }
 
 
 
@@ -124,7 +168,7 @@ const menus = ["HOME",
                         border:'2px solid black',
                         position:'absolute',
                         top:this.props.top,
-                        left:this.props.left
+                        left:this.state.left
                       }}/>
 
 
@@ -180,7 +224,7 @@ const menus = ["HOME",
     class RightArrow extends React.Component {
       render (){
         return (
-            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}>
+            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}  onClick = {this.props.click}>
               <span className = {"glyphicon glyphicon-chevron-right"} aria-hidden={"true"} style = {{
                   left:"93%",
                   top:"53%",
