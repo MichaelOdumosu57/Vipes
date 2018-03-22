@@ -60,7 +60,7 @@ const menus = ["HOME",
 
                         };
 
-        this.changeRight = this.changeRight.bind(this)
+
         // this.handchangeRight = this.handchangeRight.bind(this)
         this.carouselControl = document.getElementsByTagName("img")
 
@@ -69,22 +69,6 @@ const menus = ["HOME",
 
 
 
-            changeRight(event) {
-                // {(numberParse(left) + browser_window.outerWidth * index).toString() + "px"}
-                {console.log(this.state.divs)}
-
-                handchangeRight()
-                handchangeRight()
-                handchangeRight()
-                handchangeRight()
-                handchangeRigh()
-
-
-
-
-
-
-            }
 
             componentDidMount(){
               this.setState({
@@ -130,7 +114,7 @@ const menus = ["HOME",
                     <React.Fragment>
                       {this.state.divs}
                       <LeftArrow />,
-                      <RightArrow click = {this.changeRight}  />
+                      <RightArrow click = {this.changeRight}  animationObject = {this.state.divs} />
 
                     </React.Fragment>
                 )
@@ -140,11 +124,7 @@ const menus = ["HOME",
     }
 
 
-    function handchangeRight(){
-      this.setState({
-        left:"1000px"
-      })
-    }
+
 
 
 
@@ -159,17 +139,40 @@ const menus = ["HOME",
                             };
 
 
-            handchangeRight = handchangeRight.bind(this)
+            this.handchangeRight = this.handchangeRight.bind(this)
+
 
 
 
           }
+
+          handchangeRight(){
+            console.log("did n't i execute")
+            
+            this.setState({
+              left:"1000px"
+            })
+          }
+
+
+          componentDidMount() {
+             // When the component is mounted, add your DOM listener to the "nv" elem.
+             // (The "nv" elem is assigned in the render function.)
+             document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.handchangeRight)
+           }
+
+
+
+
+
+
 
 
 
 
 
         render() {
+
 
 
            return (
@@ -235,9 +238,22 @@ const menus = ["HOME",
     }
 
     class RightArrow extends React.Component {
+      constructor(props) {
+        super(props);
+
+
+        this.changeRight = this.changeRight.bind(this);
+
+      }
+
+      changeRight(){
+        console.log("check my props then")
+        console.log(this.props.animationObject)
+      }
+
       render (){
         return (
-            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}  onClick = {this.props.click}>
+            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}  onClick = {this.changeRight}>
               <span className = {"glyphicon glyphicon-chevron-right"} aria-hidden={"true"} style = {{
                   left:"93%",
                   top:"53%",
