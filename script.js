@@ -134,21 +134,40 @@ const menus = ["HOME",
             this.state = {
 
                           left:this.props.left,
-                          screens : this.props.screens
+                          screens : this.props.screens,
+                          transition:"left 2s"
 
                             };
 
 
             this.handchangeRight = this.handchangeRight.bind(this)
+            this.setChangeRight = this.setChangeRight.bind(this)
 
 
+
+          }
+
+          setChangeRight (){
+            var x = 0;
+
+              while(x != 1000){
+                this.setState({
+                  left:x.toString() + "px"
+                })
+                x += 1;
+              }
+
+              if(x == 1000){
+                clearInterval(null)
+              }
 
 
           }
 
           handchangeRight(){
             console.log("did n't i execute")
-            
+
+            // setInterval(this.setChangeRight,1)
             this.setState({
               left:"1000px"
             })
@@ -160,16 +179,6 @@ const menus = ["HOME",
              // (The "nv" elem is assigned in the render function.)
              document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.handchangeRight)
            }
-
-
-
-
-
-
-
-
-
-
 
         render() {
 
@@ -184,7 +193,10 @@ const menus = ["HOME",
                         border:'2px solid black',
                         position:'absolute',
                         top:this.props.top,
-                        left:this.state.left
+                        left:this.state.left,
+                        MozTransition:this.state.transition,
+                        WebkitTransition:this.state.transition,
+                        transition:this.state.transition
                       }}/>
 
 
