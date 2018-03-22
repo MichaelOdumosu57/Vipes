@@ -61,29 +61,27 @@ const menus = ["HOME",
                         };
 
         this.changeRight = this.changeRight.bind(this)
+        // this.handchangeRight = this.handchangeRight.bind(this)
+        this.carouselControl = document.getElementsByTagName("img")
 
       }
+
+
+
 
             changeRight(event) {
                 // {(numberParse(left) + browser_window.outerWidth * index).toString() + "px"}
                 {console.log(this.state.divs)}
 
-                this.setState({
-                  left:"1000px"
-                })
-                
-                this.setState({
-                  divs:pictures.map((img,index) =>
+                handchangeRight()
+                handchangeRight()
+                handchangeRight()
+                handchangeRight()
+                handchangeRigh()
 
 
-                    <Carousel_Item
-                       top = {"0px"}
-                       left = {this.state.left}
-                       key = {img}
-                       pic = {img}
-                       screens ={index == 0 ? "active" : index == 1 ? "next" : index == pictures.length ? "prev": 2} />
-                  )
-                })
+
+
 
 
             }
@@ -99,6 +97,15 @@ const menus = ["HOME",
                      key = {img}
                      pic = {img}
                      screens ={index == 0 ? "active" : index == 1 ? "next" : index == pictures.length ? "prev": 2} />
+
+                     // <img  src = {img} style = {{
+                     //     height: '90%',
+                     //     width:browser_window.outerWidth,
+                     //     border:'2px solid black',
+                     //     position:'absolute',
+                     //     top:"0px",
+                     //     left:this.state.left
+                     //   }}/>
                 )
 
               })
@@ -133,6 +140,12 @@ const menus = ["HOME",
     }
 
 
+    function handchangeRight(){
+      this.setState({
+        left:"1000px"
+      })
+    }
+
 
 
     class Carousel_Item extends React.Component {
@@ -140,19 +153,19 @@ const menus = ["HOME",
             super(props);
             this.state = {
 
-                          left:this.props.left
+                          left:this.props.left,
+                          screens : this.props.screens
 
                             };
 
-            this.receiveRight = this.receiveRight.bind(this);
+
+            handchangeRight = handchangeRight.bind(this)
+
 
 
           }
 
 
-        receiveRight(){
-
-        }
 
 
 
