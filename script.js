@@ -139,8 +139,8 @@ const menus = ["HOME",
 
                     <React.Fragment>
                       {this.state.divs}
-                      <LeftArrow animationObject = {this.state.divs} direct = {this.item_change}  />,
-                      <RightArrow  animationObject = {this.state.divs} direct = {this.item_change}/>
+                      <LeftArrow animationObject = {this.state.divs}   />,
+                      <RightArrow  animationObject = {this.state.divs} />
 
                     </React.Fragment>
                 )
@@ -173,8 +173,9 @@ const menus = ["HOME",
                           left:this.props.left,
                           screens : this.props.screens,
                           transition:"left 1s",
-                          zIndex: sheets(this.props.screens),
+
                           display: this.props.did_change
+
                             };
 
 
@@ -188,8 +189,7 @@ const menus = ["HOME",
 
 
           handchangeRight(){
-            console.log("did n't i execute")
-            console.log(this.state.screens)
+
             console.log(this.props.pic)
 
 
@@ -198,16 +198,26 @@ const menus = ["HOME",
 
 
               this.setState({
-                left: browser_window.outerWidth,
                 display:this.state.display == this.props.total - 1 ? 0 : this.state.display + 1
 
+
+
               })
-              console.log(this.state.display ,"did change "  )
+
+
+              console.log(this.state.display, this.state.zIndex,"current page")
+              // if(this.state.screens == this.state.display + 1){
+              //   this.setState({
+              //     left: -browser_window.outerWidth,
+              //   })
+              // }
+
           }
 
+
           handchangeLeft(){
-            console.log("did n't i execute")
-            console.log(this.state.screens)
+
+
             console.log(this.props.pic)
 
 
@@ -216,11 +226,20 @@ const menus = ["HOME",
 
 
               this.setState({
-                left: -browser_window.outerWidth,
                 display:this.state.display == 0 ? this.props.total - 1 : this.state.display - 1
 
+
+
               })
-              console.log(this.state.display,"did change "  )
+
+
+              console.log(this.state.display, this.state.zIndex,"current page")
+              // if(this.state.screens == this.state.display + 1){
+              //   this.setState({
+              //     left: -browser_window.outerWidth,
+              //   })
+              // }
+
 
           }
 
@@ -256,7 +275,8 @@ const menus = ["HOME",
                         MozTransition:this.state.transition,
                         WebkitTransition:this.state.transition,
                         transition:this.state.transition,
-                        zIndex:this.state.zIndex
+                        zIndex:sheets(this.state.screens,this.state.display )
+
                       }}/>
 
 
@@ -309,7 +329,7 @@ const menus = ["HOME",
       changeLeft(){
 
         console.log(this.props.animationObject)
-        this.props.direct("left")
+
 
       }
       render (){
