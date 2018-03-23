@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import {numberParse} from 'dimension_parser'
+//  we left of using the display in Carousel Items to decide which display should come first
 
 
 var change_top;
@@ -54,17 +55,38 @@ const menus = ["HOME",
       constructor(props) {
         super(props);
         this.state = {
-                      display:false,
+                      display:0,
                       left:"0px",
-                      divs:[]
+                      divs:[],
+                      pictures: pictures
 
                         };
 
 
-        // this.handchangeRight = this.handchangeRight.bind(this)
-        this.carouselControl = document.getElementsByTagName("img")
+        this.item_change = this.item_change.bind(this)
+
 
       }
+
+            item_change(dir){
+              if(dir == "left"){
+                if(this.state.display == 0){
+
+                  this.setState({
+                    display:this.state.pictures.length - 1
+                  })
+                }
+              }
+              else{
+                  this.setState({
+                    display:this.state.display - 1
+                  })
+                }
+
+
+            }
+
+
 
 
 
@@ -72,7 +94,7 @@ const menus = ["HOME",
 
             componentDidMount(){
               this.setState({
-                divs:pictures.map((img,index) =>
+                divs:this.state.pictures.map((img,index) =>
 
 
                   <Carousel_Item
@@ -80,7 +102,8 @@ const menus = ["HOME",
                      left = {this.state.left}
                      key = {img}
                      pic = {img}
-                     screens ={index == 0 ? "active" : index == 1 ? "next" : index == pictures.length ? "prev": 2} />
+                     did_change = {this.state.display}
+                     screens ={index } />
 
                      // <img  src = {img} style = {{
                      //     height: '90%',
@@ -93,11 +116,13 @@ const menus = ["HOME",
                 )
 
               })
+
             }
 
 
             render(){
 
+              console.log(this.state.divs)
               const top ="0px";
               const active = 0;
               const prev = -1;
@@ -113,8 +138,8 @@ const menus = ["HOME",
 
                     <React.Fragment>
                       {this.state.divs}
-                      <LeftArrow />,
-                      <RightArrow click = {this.changeRight}  animationObject = {this.state.divs} />
+                      <LeftArrow animationObject = {this.state.divs} direct = {this.item_change}  />,
+                      <RightArrow  animationObject = {this.state.divs} direct = {this.item_change}/>
 
                     </React.Fragment>
                 )
@@ -123,6 +148,17 @@ const menus = ["HOME",
 
     }
 
+
+    function sheets(screens,current){
+        // this function helps the DOM find which sheet is supposed to be on top, then React changes zIndex state listening to event listeners accordingly
+        console.log(screens,current)
+        if(screens == current){
+          return 3
+        }
+        else {
+          return 0
+        }
+    }
 
 
 
@@ -135,42 +171,53 @@ const menus = ["HOME",
 
                           left:this.props.left,
                           screens : this.props.screens,
-                          transition:"left 2s"
-
+                          transition:"left 1s",
+                          zIndex: sheets(this.props.screens),
+                          display: this.props.did_change
                             };
 
 
             this.handchangeRight = this.handchangeRight.bind(this)
-            this.setChangeRight = this.setChangeRight.bind(this)
+            this.handchangeLeft = this.handchangeLeft.bind(this)
 
 
 
           }
 
-          setChangeRight (){
-            var x = 0;
 
-              while(x != 1000){
-                this.setState({
-                  left:x.toString() + "px"
-                })
-                x += 1;
-              }
-
-              if(x == 1000){
-                clearInterval(null)
-              }
-
-
-          }
 
           handchangeRight(){
             console.log("did n't i execute")
 
             // setInterval(this.setChangeRight,1)
+
+            if(this.state.screens == "next"){
+                console.log("stay put   ")
+
+
+            }
             this.setState({
               left:"1000px"
             })
+          }
+
+          handchangeLeft(){
+            console.log("did n't i execute")
+            console.log(this.state.screens)
+            console.log(this.props.pic)
+
+
+
+
+
+
+              this.setState({
+                left: -browser_window.outerWidth,
+                display:this.state.display - 1
+
+              })
+              console.log(this.state.display,"did change "  )
+
           }
 
 
@@ -178,7 +225,15 @@ const menus = ["HOME",
              // When the component is mounted, add your DOM listener to the "nv" elem.
              // (The "nv" elem is assigned in the render function.)
              document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.handchangeRight)
+             document.getElementsByClassName("carousel-control")[0].addEventListener("click", this.handchangeLeft)
            }
+
+           componentWillUnmount() {
+              // When the component is mounted, add your DOM listener to the "nv" elem.
+              // (The "nv" elem is assigned in the render function.)
+              document.getElementsByClassName("carousel-control")[0].removeEventListener("click", this.handchangeLeft)
+              document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.handchangeRight)
+            }
 
         render() {
 
@@ -196,7 +251,8 @@ const menus = ["HOME",
                         left:this.state.left,
                         MozTransition:this.state.transition,
                         WebkitTransition:this.state.transition,
-                        transition:this.state.transition
+                        transition:this.state.transition,
+                        zIndex:this.state.zIndex
                       }}/>
 
 
@@ -226,7 +282,9 @@ const menus = ["HOME",
                   width:"200px",
                   position:"absolute",
                   top:"65%",
-                  left:"30%"
+                  left:"30%",
+                  zIndex:5
+
                 }}>
                 {nav_menu}
                 </div>
@@ -236,13 +294,27 @@ const menus = ["HOME",
     }
 
     class LeftArrow extends React.Component {
+      constructor(props) {
+        super(props);
+
+
+        this.changeLeft = this.changeLeft.bind(this);
+
+      }
+
+      changeLeft(){
+
+        console.log(this.props.animationObject)
+        this.props.direct("left")
+
+      }
       render (){
         return (
-            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}>
+            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font" }} onClick = {this.changeLeft}>
               <span className = {"glyphicon glyphicon-chevron-left"} aria-hidden={"true"} style =  {{
                   top:"50%",
-                  color:"red"
-
+                  color:"red",
+                  zIndex:5
               }}></span>
             </a>
         );
@@ -265,11 +337,13 @@ const menus = ["HOME",
 
       render (){
         return (
-            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font"}}  onClick = {this.changeRight}>
+            <a className = {" carousel-control"} style ={{
+              fontFamily: "bootstrap_font"}}  onClick = {this.changeRight}>
               <span className = {"glyphicon glyphicon-chevron-right"} aria-hidden={"true"} style = {{
                   left:"93%",
                   top:"53%",
-                  color:"red"
+                  color:"red",
+                  zIndex:5
               }}></span>
             </a>
         );
