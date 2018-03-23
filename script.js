@@ -55,36 +55,36 @@ const menus = ["HOME",
       constructor(props) {
         super(props);
         this.state = {
-                      display:0,
                       left:"0px",
                       divs:[],
-                      pictures: pictures
+                      pictures: pictures,
+                      display:  0
 
                         };
 
 
-        this.item_change = this.item_change.bind(this)
+        // this.item_change = this.item_change.bind(this)
 
 
       }
-
-            item_change(dir){
-              if(dir == "left"){
-                if(this.state.display == 0){
-
-                  this.setState({
-                    display:this.state.pictures.length - 1
-                  })
-                }
-              }
-              else{
-                  this.setState({
-                    display:this.state.display - 1
-                  })
-                }
-
-
-            }
+            //
+            // item_change(dir){
+            //   if(dir == "left"){
+            //     if(this.state.display == 0){
+            //
+            //       this.setState({
+            //         display:this.state.pictures.length - 1
+            //       })
+            //     }
+            //   }
+            //   else{
+            //       this.setState({
+            //         display:this.state.display - 1
+            //       })
+            //     }
+            //
+            //
+            //  }
 
 
 
@@ -102,6 +102,7 @@ const menus = ["HOME",
                      left = {this.state.left}
                      key = {img}
                      pic = {img}
+                     total = {this.state.pictures.length}
                      did_change = {this.state.display}
                      screens ={index } />
 
@@ -188,17 +189,20 @@ const menus = ["HOME",
 
           handchangeRight(){
             console.log("did n't i execute")
-
-            // setInterval(this.setChangeRight,1)
-
-            if(this.state.screens == "next"){
-                console.log("stay put   ")
+            console.log(this.state.screens)
+            console.log(this.props.pic)
 
 
-            }
-            this.setState({
-              left:"1000px"
-            })
+
+
+
+
+              this.setState({
+                left: browser_window.outerWidth,
+                display:this.state.display == this.props.total - 1 ? 0 : this.state.display + 1
+
+              })
+              console.log(this.state.display ,"did change "  )
           }
 
           handchangeLeft(){
@@ -213,7 +217,7 @@ const menus = ["HOME",
 
               this.setState({
                 left: -browser_window.outerWidth,
-                display:this.state.display - 1
+                display:this.state.display == 0 ? this.props.total - 1 : this.state.display - 1
 
               })
               console.log(this.state.display,"did change "  )
