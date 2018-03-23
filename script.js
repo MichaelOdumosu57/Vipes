@@ -161,6 +161,11 @@ const menus = ["HOME",
         }
     }
 
+    function slide_or_hide(div){
+      // this function determines whether a carousel item should slide or hide in transition
+      return div
+    }
+
 
 
 
@@ -186,59 +191,45 @@ const menus = ["HOME",
 
           }
 
-
-
           handchangeRight(){
 
             console.log(this.props.pic)
-
-
-
-
-
-
               this.setState({
                 display:this.state.display == this.props.total - 1 ? 0 : this.state.display + 1
 
-
-
               })
 
+              if((this.state.screens + 1 > this.props.total - 1 ? 0 : this.state.screens + 1 ) == this.state.display ){
+                console.log(this.state.screens, sheets(this.state.screens,this.state.display ), "so i  move left right?")
+                this.setState({
+                  left:"1000px"
+                })
+              }
 
-              console.log(this.state.display, this.state.zIndex,"current page")
-              // if(this.state.screens == this.state.display + 1){
-              //   this.setState({
-              //     left: -browser_window.outerWidth,
-              //   })
-              // }
+              // console.log(this.state.display, this.state.zIndex,"current page")
+
 
           }
 
 
           handchangeLeft(){
-
-
-            console.log(this.props.pic)
-
-
-
-
-
+            // console.log(this.props.pic)
 
               this.setState({
                 display:this.state.display == 0 ? this.props.total - 1 : this.state.display - 1
 
 
-
               })
 
+              if((this.state.screens - 1 < 0 ? this.props.total - 1 : this.state.screens - 1 ) == this.state.display ){
+                console.log(this.state.screens, sheets(this.state.screens,this.state.display ), "so i  move left right?")
+                this.setState({
+                  left:"-1000px"
+                })
+              }
 
-              console.log(this.state.display, this.state.zIndex,"current page")
-              // if(this.state.screens == this.state.display + 1){
-              //   this.setState({
-              //     left: -browser_window.outerWidth,
-              //   })
-              // }
+
+              // console.log(this.state.display, this.state.zIndex,"current page")
 
 
           }
@@ -272,9 +263,9 @@ const menus = ["HOME",
                         position:'absolute',
                         top:this.props.top,
                         left:this.state.left,
-                        MozTransition:this.state.transition,
-                        WebkitTransition:this.state.transition,
-                        transition:this.state.transition,
+                        MozTransition:slide_or_hide(this.state.transition),
+                        WebkitTransition:slide_or_hide(this.state.transition),
+                        transition:slide_or_hide(this.state.transition),
                         zIndex:sheets(this.state.screens,this.state.display )
 
                       }}/>
