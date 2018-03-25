@@ -53,6 +53,11 @@ const menus = ["HOME",
     }
 
 
+    function positioning(a,b){
+      return a ==b ? 0 : a <= b ?  browser_window.outerWidth : 0
+
+    }
+
 
     class Carousel extends React.Component {
       constructor(props) {
@@ -61,7 +66,8 @@ const menus = ["HOME",
                       left:"0px",
                       divs:[],
                       pictures: pictures,
-                      display:  0
+                      display:  0,
+                      question: [0,0]
 
                         };
 
@@ -73,21 +79,24 @@ const menus = ["HOME",
 
             item_change(move,replace){
                 console.log("preparing component coupling")
+                console.log("Components Requested")
+
+                this.setState({
+                  question:[move,replace]
+                })
+
                 ReactDOM.render(
-                  <Modal_Coupler />,
+                  <Modal_Coupler move = {this.state.divs[move]}
+                                 replace = {this.state.divs[replace]}
+                                 intention ={move <replace ? -browser_window.outerWidth: 0}/>,
                   document.getElementsByClassName('modal-coupler')[0]
                 );
 
-                // it can exist in the carousel if React renders it
+
+                // it can exist in the carouselif React renders it
 
 
              }
-
-
-
-
-
-
 
             componentDidMount(){
               this.setState({
@@ -96,13 +105,13 @@ const menus = ["HOME",
 
                   <Carousel_Item
                      top = {"0px"}
-                     left = {this.state.left}
+                     left = {positioning(this.state.question[0],this.state.question[1])}
                      key = {img}
                      pic = {img}
                      total = {this.state.pictures.length}
                      did_change = {this.state.display}
                      coupler = {this.item_change}
-                     screens ={index } />
+                     screens ={index }/>
 
                      // <img  src = {img} style = {{
                      //     height: '90%',
@@ -165,9 +174,13 @@ const menus = ["HOME",
     }
 
 
+
     class Modal_Coupler extends React.Component {
       constructor(props) {
         super(props);
+        this.state = {
+                      left:this.props.intention
+                    }
       }
 
       componentDidMount(){
@@ -179,9 +192,18 @@ const menus = ["HOME",
       }
 
       render(){
-
+        console.log(this.props.move.props)
         return(
-          <h1> I will be coupling here </h1>
+          <div style = {{
+                        left:this.state.left,
+                        position:"absolute",
+                        height:"100%",
+                        width:browser_window.outerWidth * 2,
+                        top:0
+                        }}>
+            {this.props.move}
+            {this.props.replace}
+          </div>
         );
       }
 
@@ -189,7 +211,9 @@ const menus = ["HOME",
 
 
 
+
     class Carousel_Item extends React.Component {
+
           constructor(props) {
             super(props);
             this.state = {
@@ -213,18 +237,22 @@ const menus = ["HOME",
           handchangeRight(){
 
             console.log(this.props.pic)
+
+
               this.setState({
                 display:this.state.display == this.props.total - 1 ? 0 : this.state.display + 1
 
               })
 
-              if((this.state.screens + 1 > this.props.total - 1 ? 0 : this.state.screens + 1 ) == this.state.display ){
+              if((this.state.screens > this.props.total - 1 ? 0 : this.state.screens  ) == this.state.display ){
                 // prev item might have to use a coupler to keep two pages on top
                 console.log(this.state.screens, sheets(this.state.screens,this.state.display ), "so i  move left right?")
-                this.props.coupler(this.state.screens,this.state.screens+1)
-                this.setState({
-                  left:browser_window.outerWidth
-                })
+                // this.setState({
+                //   left:browser_window.outerWidth,
+                //   transition:null
+                //
+                // })
+                this.props.coupler(this.state.screens - 1 ,this.state.screens )
               }
 
 
@@ -279,7 +307,7 @@ const menus = ["HOME",
 
            return (
 
-
+                  // <div>
                     <img  src = {this.props.pic} style = {{
                         height: '90%',
                         width:browser_window.outerWidth,
@@ -293,6 +321,20 @@ const menus = ["HOME",
                         zIndex:sheets(this.state.screens,this.state.display )
 
                       }}/>
+                      // <img  src = {this.props.data.pic} style = {{
+                      //     height: this.props.data.height,
+                      //     width:this.props.data.width,
+                      //     border:'2px solid black',
+                      //     position:'absolute',
+                      //     top:this.props.data.top,
+                      //     left:this.props.data.left,
+                      //     zIndex:sheets(this.props.data.screens,this.props.data.display )
+                      //
+                      //   }}/>
+                    // </div>
+
+
+
 
 
                );
