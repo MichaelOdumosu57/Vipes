@@ -4,8 +4,11 @@ import ReactDOM from 'react-dom';
 //  we left of using the display in Carousel Items to decide which display should come first
 
 
+
 var change_top;
 var change_left;
+
+const modal_coupler =  document.getElementById('modal-coupler');
 
 const pictures = [
                           './photos/beach.jpeg',
@@ -63,28 +66,22 @@ const menus = ["HOME",
                         };
 
 
-        // this.item_change = this.item_change.bind(this)
+        this.item_change = this.item_change.bind(this)
 
 
       }
-            //
-            // item_change(dir){
-            //   if(dir == "left"){
-            //     if(this.state.display == 0){
-            //
-            //       this.setState({
-            //         display:this.state.pictures.length - 1
-            //       })
-            //     }
-            //   }
-            //   else{
-            //       this.setState({
-            //         display:this.state.display - 1
-            //       })
-            //     }
-            //
-            //
-            //  }
+
+            item_change(move,replace){
+                console.log("preparing component coupling")
+                ReactDOM.render(
+                  <Modal_Coupler />,
+                  document.getElementsByClassName('modal-coupler')[0]
+                );
+
+                // it can exist in the carousel if React renders it
+
+
+             }
 
 
 
@@ -104,6 +101,7 @@ const menus = ["HOME",
                      pic = {img}
                      total = {this.state.pictures.length}
                      did_change = {this.state.display}
+                     coupler = {this.item_change}
                      screens ={index } />
 
                      // <img  src = {img} style = {{
@@ -141,7 +139,7 @@ const menus = ["HOME",
                       {this.state.divs}
                       <LeftArrow animationObject = {this.state.divs}   />,
                       <RightArrow  animationObject = {this.state.divs} />
-
+                      <div id ="index" className = "modal-coupler"></div>
                     </React.Fragment>
                 )
             }
@@ -149,7 +147,7 @@ const menus = ["HOME",
 
     }
 
-
+// a DOM node must be present for the coupler to render in
     function sheets(screens,current){
         // this function helps the DOM find which sheet is supposed to be on top, then React changes zIndex state listening to event listeners accordingly
         console.log(screens,current)
@@ -167,6 +165,27 @@ const menus = ["HOME",
     }
 
 
+    class Modal_Coupler extends React.Component {
+      constructor(props) {
+        super(props);
+      }
+
+      componentDidMount(){
+
+      }
+
+      componentWillUnmount(){
+
+      }
+
+      render(){
+
+        return(
+          <h1> I will be coupling here </h1>
+        );
+      }
+
+    }
 
 
 
@@ -177,7 +196,7 @@ const menus = ["HOME",
 
                           left:this.props.left,
                           screens : this.props.screens,
-                          transition:"left 1s",
+                          transition:"left 2s",
 
                           display: this.props.did_change
 
@@ -200,11 +219,16 @@ const menus = ["HOME",
               })
 
               if((this.state.screens + 1 > this.props.total - 1 ? 0 : this.state.screens + 1 ) == this.state.display ){
+                // prev item might have to use a coupler to keep two pages on top
                 console.log(this.state.screens, sheets(this.state.screens,this.state.display ), "so i  move left right?")
+                this.props.coupler(this.state.screens,this.state.screens+1)
                 this.setState({
-                  left:"1000px"
+                  left:browser_window.outerWidth
                 })
               }
+
+
+
 
               // console.log(this.state.display, this.state.zIndex,"current page")
 
