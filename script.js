@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 var change_top;
 var change_left;
 
-const modal_coupler =  document.getElementById('modal-coupler');
+// const modal_coupler =  document.getElementById('modal-coupler');
 
 const pictures = [
                           './photos/beach.jpeg',
@@ -53,8 +53,9 @@ const menus = ["HOME",
     }
 
 
-    function positioning(a,b){
-      return a ==b ? 0 : a <= b ?  browser_window.outerWidth : 0
+    function positioning(a,b,c){
+      // console.log(a,b,c)
+      return a ==b ? 0 : a < b  && ( c == a ) ?  browser_window.outerWidth.toString() + "px" : 0
 
     }
 
@@ -69,6 +70,7 @@ const menus = ["HOME",
                       display:  0,
                       question: [0,0]
 
+
                         };
 
 
@@ -77,18 +79,44 @@ const menus = ["HOME",
 
       }
 
-            item_change(move,replace){
+            item_change(move,replace,dir){
                 console.log("preparing component coupling")
                 console.log("Components Requested")
+                // console.log(browser_window.outerWidth)
+                console.log(move,replace)
+
 
                 this.setState({
                   question:[move,replace]
+
                 })
+
+                this.setState({
+                  divs:this.state.pictures.map((img,index) =>
+
+
+                    <Carousel_Item
+                       top = {"0px"}
+                       left = {positioning(this.state.question[0],this.state.question[1],index)}
+                       key = {img}
+                       pic = {img}
+                       total = {this.state.pictures.length}
+                       did_change = {this.state.display}
+                       coupler = {this.item_change}
+                       screens ={index }/>
+
+
+                  )
+                })
+
+                console.log(this.state.question)
+
 
                 ReactDOM.render(
                   <Modal_Coupler move = {this.state.divs[move]}
                                  replace = {this.state.divs[replace]}
-                                 intention ={move <replace ? -browser_window.outerWidth: 0}/>,
+                                 intention ={move <replace ? -browser_window.outerWidth: 0}
+                                 transition ={dir != "" ? "left 5s" : null}/>,
                   document.getElementsByClassName('modal-coupler')[0]
                 );
 
@@ -113,14 +141,7 @@ const menus = ["HOME",
                      coupler = {this.item_change}
                      screens ={index }/>
 
-                     // <img  src = {img} style = {{
-                     //     height: '90%',
-                     //     width:browser_window.outerWidth,
-                     //     border:'2px solid black',
-                     //     position:'absolute',
-                     //     top:"0px",
-                     //     left:this.state.left
-                     //   }}/>
+
                 )
 
               })
@@ -130,24 +151,12 @@ const menus = ["HOME",
 
             render(){
 
-              console.log(this.state.divs)
-              const top ="0px";
-              const active = 0;
-              const prev = -1;
-              const next = 1;
-              let present = null;
-
-
-
-
-
-
               return(
 
                     <React.Fragment>
                       {this.state.divs}
-                      <LeftArrow animationObject = {this.state.divs}   />,
-                      <RightArrow  animationObject = {this.state.divs} />
+                      <LeftArrow   />
+                      <RightArrow   />
                       <div id ="index" className = "modal-coupler"></div>
                     </React.Fragment>
                 )
@@ -157,11 +166,17 @@ const menus = ["HOME",
     }
 
 // a DOM node must be present for the coupler to render in
-    function sheets(screens,current){
+    function sheets(screens,current,dir){
         // this function helps the DOM find which sheet is supposed to be on top, then React changes zIndex state listening to event listeners accordingly
-        console.log(screens,current)
-        if(screens == current){
-          return 3
+        console.log("sheets",screens,current,dir)
+
+        if(screens  == current -1 &&  dir == "right" ){
+          console.log("hit")
+          return 2
+        }
+        else if(screens == current){
+          console.log("hit")
+          return 2
         }
         else {
           return 0
@@ -180,26 +195,43 @@ const menus = ["HOME",
         super(props);
         this.state = {
                       left:this.props.intention
-                    }
+                     }
+
+        this.sliding_items = this.sliding_items.bind(this)
       }
 
-      componentDidMount(){
 
+
+      componentDidMount(){
+          document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
+          console.log(this.props.transition,this.props.intention)
       }
 
       componentWillUnmount(){
-
+          document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.sliding_items)
       }
 
+      sliding_items(){
+        // this function works on the sliding functionality for the modal, simply the left css attribute gets changed
+        this.setState({
+          left:0
+        })
+      }
+
+
       render(){
-        console.log(this.props.move.props)
+        // console.log(this.props.move.props)
+
         return(
           <div style = {{
                         left:this.state.left,
                         position:"absolute",
                         height:"100%",
                         width:browser_window.outerWidth * 2,
-                        top:0
+                        top:0,
+                        transition:this.props.transition,
+                        zIndex:4
+
                         }}>
             {this.props.move}
             {this.props.replace}
@@ -221,7 +253,7 @@ const menus = ["HOME",
                           left:this.props.left,
                           screens : this.props.screens,
                           transition:"left 2s",
-
+                          dir:"null",
                           display: this.props.did_change
 
                             };
@@ -236,23 +268,30 @@ const menus = ["HOME",
 
           handchangeRight(){
 
-            console.log(this.props.pic)
+            // console.log(this.props.pic)
 
 
               this.setState({
-                display:this.state.display == this.props.total - 1 ? 0 : this.state.display + 1
+                display:this.state.display == this.props.total - 1 ? 0 : this.state.display + 1,
+                dir:"right"
+
 
               })
 
+
+
               if((this.state.screens > this.props.total - 1 ? 0 : this.state.screens  ) == this.state.display ){
                 // prev item might have to use a coupler to keep two pages on top
-                console.log(this.state.screens, sheets(this.state.screens,this.state.display ), "so i  move left right?")
-                // this.setState({
-                //   left:browser_window.outerWidth,
-                //   transition:null
-                //
-                // })
-                this.props.coupler(this.state.screens - 1 ,this.state.screens )
+
+                console.log(this.state.screens, sheets(this.state.screens,this.state.display ), "so i  move right ?")
+
+
+
+
+
+
+                this.props.coupler(this.state.screens == 0 ? this.props.total -1: this.state.screens -1 ,this.state.screens,this.state.dir )
+
               }
 
 
@@ -262,6 +301,22 @@ const menus = ["HOME",
 
 
           }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
           handchangeLeft(){
@@ -274,10 +329,8 @@ const menus = ["HOME",
               })
 
               if((this.state.screens - 1 < 0 ? this.props.total - 1 : this.state.screens - 1 ) == this.state.display ){
-                console.log(this.state.screens, sheets(this.state.screens,this.state.display ), "so i  move left right?")
-                this.setState({
-                  left:"-1000px"
-                })
+                console.log(this.state.screens,  "so i  move left right?")
+
               }
 
 
@@ -292,6 +345,7 @@ const menus = ["HOME",
              // (The "nv" elem is assigned in the render function.)
              document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.handchangeRight)
              document.getElementsByClassName("carousel-control")[0].addEventListener("click", this.handchangeLeft)
+                // it can exist in the carouselif React renders it
            }
 
            componentWillUnmount() {
@@ -315,10 +369,10 @@ const menus = ["HOME",
                         position:'absolute',
                         top:this.props.top,
                         left:this.state.left,
-                        MozTransition:slide_or_hide(this.state.transition),
-                        WebkitTransition:slide_or_hide(this.state.transition),
-                        transition:slide_or_hide(this.state.transition),
-                        zIndex:sheets(this.state.screens,this.state.display )
+                        // MozTransition:slide_or_hide(this.state.transition),
+                        // WebkitTransition:slide_or_hide(this.state.transition),
+                        // transition:slide_or_hide(this.state.transition),
+                        zIndex:sheets(this.state.screens,this.state.display,this.state.dir)
 
                       }}/>
                       // <img  src = {this.props.data.pic} style = {{
@@ -385,7 +439,7 @@ const menus = ["HOME",
 
       changeLeft(){
 
-        console.log(this.props.animationObject)
+
 
 
       }
@@ -412,8 +466,7 @@ const menus = ["HOME",
       }
 
       changeRight(){
-        console.log("check my props then")
-        console.log(this.props.animationObject)
+          // ReactDOM.unmountComponentAtNode(document.getElementsByClassName('modal-coupler')[0]);
       }
 
       render (){
