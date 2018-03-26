@@ -66,6 +66,7 @@ const menus = ["HOME",
         this.state = {
                       left:"0px",
                       divs:[],
+                      modal_divs:[],
                       pictures: pictures,
                       display:  0,
                       question: [0,0]
@@ -92,11 +93,11 @@ const menus = ["HOME",
                 })
 
                 this.setState({
-                  divs:this.state.pictures.map((img,index) =>
+                  modal_divs:this.state.pictures.map((img,index) =>
 
 
                     <Carousel_Item
-                       top = {"0px"}
+                       top = {"100px"}
                        left = {positioning(this.state.question[0],this.state.question[1],index)}
                        key = {img}
                        pic = {img}
@@ -113,8 +114,8 @@ const menus = ["HOME",
 
 
                 ReactDOM.render(
-                  <Modal_Coupler move = {this.state.divs[move]}
-                                 replace = {this.state.divs[replace]}
+                  <Modal_Coupler move = {this.state.modal_divs[move]}
+                                 replace = {this.state.modal_divs[replace]}
                                  intention ={move <replace ? -browser_window.outerWidth: 0}
                                  transition ={dir != "" ? "left 5s" : null}/>,
                   document.getElementsByClassName('modal-coupler')[0]
@@ -194,7 +195,8 @@ const menus = ["HOME",
       constructor(props) {
         super(props);
         this.state = {
-                      left:this.props.intention
+                      left:this.props.intention,
+                      slider:this.props.transition
                      }
 
         this.sliding_items = this.sliding_items.bind(this)
@@ -229,7 +231,7 @@ const menus = ["HOME",
                         height:"100%",
                         width:browser_window.outerWidth * 2,
                         top:0,
-                        transition:this.props.transition,
+                        transition:this.state.slider,
                         zIndex:4
 
                         }}>
@@ -501,6 +503,13 @@ ReactDOM.render(
   <Navigation links ={ menus}  />,
   document.getElementsByClassName('navigation')[0]
 );
+
+ReactDOM.render(
+  <Modal_Coupler intention = {-browser_window.outerWidth}
+                 transition = "left 5s"/>,
+  document.getElementsByClassName('modal-coupler')[0]
+);
+
 
 // ReactDOM.render(
 //   <LeftArrow />,
