@@ -70,7 +70,7 @@ const menus = ["HOME",
                       pictures: pictures,
                       display:  0,
                       question: [0,0],
-                      modalMount: false
+                      modalMount: true
 
 
 
@@ -88,7 +88,7 @@ const menus = ["HOME",
 
             replace_modal (){
               this.setState({
-                modalMount:true
+                modalMount:false
               })
             }
             reset_left (a,b){
@@ -110,17 +110,6 @@ const menus = ["HOME",
 
               }
             }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -194,7 +183,7 @@ const menus = ["HOME",
                   //     x -= 1
                   // }
 
-                  setTimeout(this.stop_the_bug,50)
+                  setTimeout(this.stop_the_bug,5000)
                 // it can exist in the carouselif React renders it
 
 
@@ -279,15 +268,7 @@ const menus = ["HOME",
                      }
 
         this.sliding_items = this.sliding_items.bind(this)
-
       }
-
-
-
-      // componentDidMount(){
-      //     document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
-      //     console.log(this.props.transition,this.props.intention)
-      // }
 
 
 
@@ -295,7 +276,6 @@ const menus = ["HOME",
           document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
           console.log(this.props.transition,this.props.intention)
       }
-
 
       componentWillUnmount(){
           document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.sliding_items)
@@ -357,6 +337,8 @@ const menus = ["HOME",
 
             this.handchangeRight = this.handchangeRight.bind(this)
             this.handchangeLeft = this.handchangeLeft.bind(this)
+
+
 
           }
 
@@ -597,8 +579,8 @@ ReactDOM.render(
 );
 
 ReactDOM.render(
-  <Modal_Coupler intention = {-browser_window.outerWidth  }
-                 transition = "left 5s"/>,
+  <Modal_Coupler intention = {-browser_window.outerWidth}
+                 transition = "left 2s"/>,
   document.getElementsByClassName('modal-coupler')[0]
 );
 
@@ -611,4 +593,4 @@ ReactDOM.render(
 // ReactDOM.render(
 //   <RightArrow />,
 //   document.getElementsByClassName('RightArrow')[0]
-// );--
+// );
