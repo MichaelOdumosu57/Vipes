@@ -69,16 +69,80 @@ const menus = ["HOME",
                       modal_divs:[],
                       pictures: pictures,
                       display:  0,
-                      question: [0,0]
+                      question: [0,0],
+                      modalMount: false
+
 
 
                         };
 
 
         this.item_change = this.item_change.bind(this)
+        this.display_update = this.display_update.bind(this)
+        this.reset_left = this.reset_left.bind(this)
+        this.replace_modal = this.replace_modal.bind(this)
+        this.stop_the_bug = this.stop_the_bug.bind(this)
 
 
       }
+
+            replace_modal (){
+              this.setState({
+                modalMount:true
+              })
+            }
+            reset_left (a,b){
+              return a < b ? -browser_window.outerWidth: 0
+            }
+
+            display_update(event){
+              console.log(event.target.classList[1])
+              if(event.target.classList[1] == "glyphicon-chevron-right"){
+                  console.log("executeds")
+                  this.setState({
+                    display:this.state.display + 1
+                  })
+              }
+              else{
+                this.setState({
+                  display:this.state.display - 1
+                })
+
+              }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            stop_the_bug(){
+              var x = 2;
+              while(this.state.modalMount != true || x != 0){
+                  console.log(this.state.modalMount,x)
+                  ReactDOM.render(
+                    this.state.modalMount ? (<Modal_Coupler
+                                   move = {this.state.modal_divs[this.state.question[0]]}
+                                   replace = {this.state.modal_divs[this.state.question[1]]}
+                                   intention ={this.reset_left(this.state.question[0] , this.state.question[1] )}
+                                   transition ="left 5s"/>) : null ,
+                    document.getElementsByClassName('modal-coupler')[0]
+                  );
+
+                  this.setState({
+                    modalMount:true
+                  })
+                  x -= 1
+              }
+            }
 
             item_change(move,replace,dir){
                 console.log("preparing component coupling")
@@ -110,24 +174,35 @@ const menus = ["HOME",
                   )
                 })
 
-                console.log(this.state.question)
+                console.log("where it should start",this.state.question[0] <this.state.question[1] ? -browser_window.outerWidth: 0)
 
+                  // var x = 2;
+                  // while(this.setState.modalMount != true || x != 0){
+                  //     console.log(this.setState.modalMount)
+                  //     ReactDOM.render(
+                  //       this.state.modalMount ? (<Modal_Coupler
+                  //                      move = {this.state.modal_divs[move]}
+                  //                      replace = {this.state.modal_divs[replace]}
+                  //                      intention ={this.reset_left(this.state.question[0] , this.state.question[1] )}
+                  //                      transition ={dir != "" ? "left 5s" : null}/>) : null,
+                  //       document.getElementsByClassName('modal-coupler')[0]
+                  //     );
+                  //
+                  //     this.setState({
+                  //       modalMount:true
+                  //     })
+                  //     x -= 1
+                  // }
 
-                ReactDOM.render(
-                  <Modal_Coupler move = {this.state.modal_divs[move]}
-                                 replace = {this.state.modal_divs[replace]}
-                                 intention ={move <replace ? -browser_window.outerWidth: 0}
-                                 transition ={dir != "" ? "left 5s" : null}/>,
-                  document.getElementsByClassName('modal-coupler')[0]
-                );
-
-
+                  setTimeout(this.stop_the_bug,50)
                 // it can exist in the carouselif React renders it
 
 
              }
 
             componentDidMount(){
+              document.getElementsByClassName("carousel-control")[0].addEventListener("click", this.display_update)
+              document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.display_update)
               this.setState({
                 divs:this.state.pictures.map((img,index) =>
 
@@ -149,6 +224,10 @@ const menus = ["HOME",
 
             }
 
+            componentWillUnmount(){
+              document.getElementsByClassName("carousel-control")[0].removeEventListener("click", this.display_update)
+              document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.display_update)
+            }
 
             render(){
 
@@ -156,8 +235,8 @@ const menus = ["HOME",
 
                     <React.Fragment>
                       {this.state.divs}
-                      <LeftArrow   />
-                      <RightArrow   />
+                      <LeftArrow  unmount = {this.replace_modal}  />
+                      <RightArrow  unmount = {this.replace_modal}  />
                       <div id ="index" className = "modal-coupler"></div>
                     </React.Fragment>
                 )
@@ -169,7 +248,7 @@ const menus = ["HOME",
 // a DOM node must be present for the coupler to render in
     function sheets(screens,current,dir){
         // this function helps the DOM find which sheet is supposed to be on top, then React changes zIndex state listening to event listeners accordingly
-        console.log("sheets",screens,current,dir)
+        // console.log("sheets",screens,current,dir)
 
         if(screens  == current -1 &&  dir == "right" ){
           console.log("hit")
@@ -200,7 +279,15 @@ const menus = ["HOME",
                      }
 
         this.sliding_items = this.sliding_items.bind(this)
+
       }
+
+
+
+      // componentDidMount(){
+      //     document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
+      //     console.log(this.props.transition,this.props.intention)
+      // }
 
 
 
@@ -209,15 +296,22 @@ const menus = ["HOME",
           console.log(this.props.transition,this.props.intention)
       }
 
+
       componentWillUnmount(){
           document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.sliding_items)
+          this.setState({
+            left:-browser_window.outerWidth
+          })
       }
+
+
 
       sliding_items(){
         // this function works on the sliding functionality for the modal, simply the left css attribute gets changed
         this.setState({
           left:0
         })
+
       }
 
 
@@ -264,8 +358,6 @@ const menus = ["HOME",
             this.handchangeRight = this.handchangeRight.bind(this)
             this.handchangeLeft = this.handchangeLeft.bind(this)
 
-
-
           }
 
           handchangeRight(){
@@ -285,13 +377,13 @@ const menus = ["HOME",
               if((this.state.screens > this.props.total - 1 ? 0 : this.state.screens  ) == this.state.display ){
                 // prev item might have to use a coupler to keep two pages on top
 
-                console.log(this.state.screens, sheets(this.state.screens,this.state.display ), "so i  move right ?")
+                console.log(this.state.screens,  this.state.display, "so i  move right ?")
 
 
 
 
 
-
+                console.log("see me",this.state.screens == 0 ? this.props.total -1: this.state.screens -1 ,this.state.screens,this.state.dir )
                 this.props.coupler(this.state.screens == 0 ? this.props.total -1: this.state.screens -1 ,this.state.screens,this.state.dir )
 
               }
@@ -474,7 +566,7 @@ const menus = ["HOME",
       render (){
         return (
             <a className = {" carousel-control"} style ={{
-              fontFamily: "bootstrap_font"}}  onClick = {this.changeRight}>
+              fontFamily: "bootstrap_font"}}  onClick = {this.props.unmount}>
               <span className = {"glyphicon glyphicon-chevron-right"} aria-hidden={"true"} style = {{
                   left:"93%",
                   top:"53%",
@@ -505,7 +597,7 @@ ReactDOM.render(
 );
 
 ReactDOM.render(
-  <Modal_Coupler intention = {-browser_window.outerWidth}
+  <Modal_Coupler intention = {-browser_window.outerWidth  }
                  transition = "left 5s"/>,
   document.getElementsByClassName('modal-coupler')[0]
 );
@@ -519,4 +611,4 @@ ReactDOM.render(
 // ReactDOM.render(
 //   <RightArrow />,
 //   document.getElementsByClassName('RightArrow')[0]
-// );
+// );--
