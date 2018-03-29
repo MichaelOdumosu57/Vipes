@@ -70,7 +70,7 @@ const menus = ["HOME",
                       pictures: pictures,
                       display:  0,
                       question: [0,0],
-                      modalMount: true
+                      modalMount: false
 
 
 
@@ -88,7 +88,7 @@ const menus = ["HOME",
 
             replace_modal (){
               this.setState({
-                modalMount:false
+                modalMount:true
               })
             }
             reset_left (a,b){
@@ -183,7 +183,7 @@ const menus = ["HOME",
                   //     x -= 1
                   // }
 
-                  setTimeout(this.stop_the_bug,5000)
+                  setTimeout(this.stop_the_bug,50)
                 // it can exist in the carouselif React renders it
 
 
