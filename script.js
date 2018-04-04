@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 var change_top;
 var change_left;
 
+
 // const modal_coupler =  document.getElementById('modal-coupler');
 
 const pictures = [
@@ -70,8 +71,8 @@ const menus = ["HOME",
                       pictures: pictures,
                       display:  0,
                       question: [0,0],
-                      modalMount: false
-
+                      modalMount: false,
+                      initMount:0
 
 
                         };
@@ -82,14 +83,17 @@ const menus = ["HOME",
         this.reset_left = this.reset_left.bind(this)
         this.replace_modal = this.replace_modal.bind(this)
         this.stop_the_bug = this.stop_the_bug.bind(this)
+        this.animate = this.animate.bind(this)
 
 
       }
 
             replace_modal (){
-              this.setState({
-                modalMount:true
-              })
+
+              this.state.initMount == 0 ?  this.setState ({modalMount:true,initMount:1}) : this.setState ({modalMount:false,initMount:1})
+
+
+
             }
             reset_left (a,b){
               return a < b ? -browser_window.outerWidth: 0
@@ -111,26 +115,66 @@ const menus = ["HOME",
               }
             }
 
+            animate(){
+
+              ReactDOM.render(
+                null ,
+                document.getElementsByClassName('modal-coupler')[0]
+              );
+
+            }
 
 
             stop_the_bug(){
+
               var x = 2;
+
               while(this.state.modalMount != true || x != 0){
                   console.log(this.state.modalMount,x)
-                  ReactDOM.render(
-                    this.state.modalMount ? (<Modal_Coupler
-                                   move = {this.state.modal_divs[this.state.question[0]]}
-                                   replace = {this.state.modal_divs[this.state.question[1]]}
-                                   intention ={this.reset_left(this.state.question[0] , this.state.question[1] )}
-                                   transition ="left 5s"/>) : null ,
-                    document.getElementsByClassName('modal-coupler')[0]
-                  );
+                  // if(this.state.initMount == 0){
 
+                      ReactDOM.render(
+                        this.state.modalMount ? (<Modal_Coupler
+                                       ref = {(div) => {this.state.intention = 0;}}
+                                       move = {this.state.modal_divs[this.state.question[0]]}
+                                       replace = {this.state.modal_divs[this.state.question[1]]}
+                                       intention ={this.reset_left(this.state.question[0],this.state.question[1])}
+                                       transition ="left 2s"/>  ):   null,
+                        document.getElementsByClassName('modal-coupler')[0]
+                      );
+
+
+
+                  //     ReactDOM.render(
+                  //       <Modal_Coupler
+                  //                      move = {this.state.modal_divs[this.state.question[0]]}
+                  //                      replace = {this.state.modal_divs[this.state.question[1]]}
+                  //                      intention ={this.reset_left(this.state.question[0],this.state.question[1])}
+                  //                      transition ="left 2s"/>
+                  //                      ,
+                  //       document.getElementsByClassName('modal-coupler')[0]
+                  //     );
+                  // }
+
+                  // else{
+                  //   ReactDOM.render(
+                  //     this.state.modalMount ? (<Modal_Coupler
+                  //                    move = {this.state.modal_divs[this.state.question[0]]}
+                  //                    replace = {this.state.modal_divs[this.state.question[1]]}
+                  //                    intention ={this.reset_left(this.state.question[0],this.state.question[1])}
+                  //                    transition ="left 2s"/> ):   null,
+                  //     document.getElementsByClassName('modal-coupler')[0]
+                  //   );
+                  //
+                  // }
                   this.setState({
-                    modalMount:true
+                    modalMount:true,
+                    initMount:1
                   })
                   x -= 1
               }
+
+
             }
 
             item_change(move,replace,dir){
@@ -183,7 +227,7 @@ const menus = ["HOME",
                   //     x -= 1
                   // }
 
-                  setTimeout(this.stop_the_bug,50)
+                  this.state.initMount == 0 ? setTimeout(this.stop_the_bug,50)  :  setTimeout(this.stop_the_bug,5000)
                 // it can exist in the carouselif React renders it
 
 
@@ -257,7 +301,13 @@ const menus = ["HOME",
       return div
     }
 
+    function sliding_items(){
+      // this function works on the sliding functionality for the modal, simply the left css attribute gets changed
+      this.setState({
+        left:0
+      })
 
+    }
 
     class Modal_Coupler extends React.Component {
       constructor(props) {
@@ -277,22 +327,20 @@ const menus = ["HOME",
           console.log(this.props.transition,this.props.intention)
       }
 
+      // componentWillReceiveProps(){
+      //   document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
+      // }
       componentWillUnmount(){
           document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.sliding_items)
-          this.setState({
-            left:-browser_window.outerWidth
-          })
       }
-
-
 
       sliding_items(){
-        // this function works on the sliding functionality for the modal, simply the left css attribute gets changed
-        this.setState({
-          left:0
-        })
-
+      this.setState({
+        left:0
+      })
       }
+
+
 
 
       render(){
