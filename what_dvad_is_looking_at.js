@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom';
 
 var change_top;
 var change_left;
-var global_function;
 
 
 // const modal_coupler =  document.getElementById('modal-coupler');
@@ -60,7 +59,6 @@ const menus = ["HOME",
       return a ==b ? 0 : a < b  && ( c == a ) ?  browser_window.outerWidth.toString() + "px" : 0
 
     }
-
 
 
     class Carousel extends React.Component {
@@ -141,8 +139,7 @@ const menus = ["HOME",
                                        move = {this.state.modal_divs[this.state.question[0]]}
                                        replace = {this.state.modal_divs[this.state.question[1]]}
                                        intention ={this.reset_left(this.state.question[0],this.state.question[1])}
-                                       transition ="left 2s"
-                                       sliding = {() => this.sliders}/>  ):   null,
+                                       transition ="left 2s"/>  ):   null,
                         document.getElementsByClassName('modal-coupler')[0]
                       );
 
@@ -230,8 +227,7 @@ const menus = ["HOME",
                   //     x -= 1
                   // }
 
-                  // this.state.initMount == 0 ? setTimeout(this.stop_the_bug,50)  :  setTimeout(this.stop_the_bug,50)
-                    setTimeout(this.stop_the_bug,50)
+                  this.state.initMount == 0 ? setTimeout(this.stop_the_bug,50)  :  setTimeout(this.stop_the_bug,5000)
                 // it can exist in the carouselif React renders it
 
 
@@ -322,17 +318,12 @@ const menus = ["HOME",
                      }
 
         this.sliding_items = this.sliding_items.bind(this)
-        this.just_to_set = this.just_to_set.bind(this)
-
-
       }
 
 
 
-
       componentDidMount(){
-
-        document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.just_to_set)
+          document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
           console.log(this.props.transition,this.props.intention)
       }
 
@@ -340,27 +331,13 @@ const menus = ["HOME",
       //   document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
       // }
       componentWillUnmount(){
-          document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.just_to_set)
+          document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.sliding_items)
       }
 
-
-
-      just_to_set(){
-        console.log("move!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        // clearTimeout()
-        // console.log(this)
-        setTimeout(this.sliding_items,1)
-      }
       sliding_items(){
-        if(document.getElementsByClassName("difference")[0] != null){
-          console.log(document.getElementsByClassName("difference")[0])
-            this.setState({
-              left:0
-            })
-            console.log(this.state.left)
-            clearTimeout(this.sliding_items)
-        }
-
+      this.setState({
+        left:0
+      })
       }
 
 
@@ -379,7 +356,7 @@ const menus = ["HOME",
                         transition:this.state.slider,
                         zIndex:4
 
-                      }} className = {"difference"}>
+                        }}>
             {this.props.move}
             {this.props.replace}
           </div>
