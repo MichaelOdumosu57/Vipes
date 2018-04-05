@@ -74,7 +74,8 @@ const menus = ["HOME",
                       display:  0,
                       question: [0,0],
                       modalMount: false,
-                      initMount:0
+                      initMount:0,
+                      flag:0
 
 
                         };
@@ -135,6 +136,7 @@ const menus = ["HOME",
                   console.log(this.state.modalMount,x)
                   // if(this.state.initMount == 0){
 
+
                       ReactDOM.render(
                         this.state.modalMount ? (<Modal_Coupler
                                        ref = {(div) => {this.state.intention = 0;}}
@@ -142,9 +144,13 @@ const menus = ["HOME",
                                        replace = {this.state.modal_divs[this.state.question[1]]}
                                        intention ={this.reset_left(this.state.question[0],this.state.question[1])}
                                        transition ="left 2s"
+                                       flag = {this.state.flag}
                                        sliding = {() => this.sliders}/>  ):   null,
                         document.getElementsByClassName('modal-coupler')[0]
                       );
+                      this.setState({
+                        flag:1
+                      })
 
 
 
@@ -175,6 +181,11 @@ const menus = ["HOME",
                     initMount:1
                   })
                   x -= 1
+                  if(x == 1){
+                    this.setState({
+                      flag:0
+                    })
+                  }
               }
 
 
@@ -318,7 +329,8 @@ const menus = ["HOME",
         super(props);
         this.state = {
                       left:this.props.intention,
-                      slider:this.props.transition
+                      slider:this.props.transition,
+                      flag:this.props.flag
                      }
 
         this.sliding_items = this.sliding_items.bind(this)
@@ -332,7 +344,7 @@ const menus = ["HOME",
 
       componentDidMount(){
 
-        document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.just_to_set)
+        // document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.just_to_set)
           console.log(this.props.transition,this.props.intention)
       }
 
@@ -340,22 +352,22 @@ const menus = ["HOME",
       //   document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
       // }
       componentWillUnmount(){
-          document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.just_to_set)
+          // document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.just_to_set)
       }
-
 
 
       just_to_set(){
         console.log("move!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         // clearTimeout()
         // console.log(this)
-        setTimeout(this.sliding_items,1)
+        setTimeout(this.sliding_items,100)
       }
       sliding_items(){
         if(document.getElementsByClassName("difference")[0] != null){
           console.log(document.getElementsByClassName("difference")[0])
             this.setState({
-              left:0
+              left:0,
+              flag:0
             })
             console.log(this.state.left)
             clearTimeout(this.sliding_items)
@@ -369,6 +381,9 @@ const menus = ["HOME",
       render(){
         // console.log(this.props.move.props)
 
+              if(this.props.flag == 1){
+                  this.just_to_set()
+              }
         return(
           <div style = {{
                         left:this.state.left,
