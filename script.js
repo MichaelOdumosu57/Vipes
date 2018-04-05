@@ -181,7 +181,7 @@ const menus = ["HOME",
                     initMount:1
                   })
                   x -= 1
-                  if(x == 1){
+                  if(x == 0 ){
                     this.setState({
                       flag:0
                     })
@@ -335,6 +335,7 @@ const menus = ["HOME",
 
         this.sliding_items = this.sliding_items.bind(this)
         this.just_to_set = this.just_to_set.bind(this)
+        this.wait_for_click = this.wait_for_click.bind(this)
 
 
       }
@@ -344,7 +345,7 @@ const menus = ["HOME",
 
       componentDidMount(){
 
-        // document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.just_to_set)
+        document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.wait_for_click)
           console.log(this.props.transition,this.props.intention)
       }
 
@@ -352,9 +353,14 @@ const menus = ["HOME",
       //   document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.sliding_items)
       // }
       componentWillUnmount(){
-          // document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.just_to_set)
+          document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.wait_for_click)
       }
 
+      wait_for_click(){
+        this.setState({
+          flag:1
+        })
+      }
 
       just_to_set(){
         console.log("move!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -381,7 +387,8 @@ const menus = ["HOME",
       render(){
         // console.log(this.props.move.props)
 
-              if(this.props.flag == 1){
+              console.log("this is this.state.flag",this.state.flag)
+              if(this.state.flag == 1 ){
                   this.just_to_set()
               }
         return(
@@ -665,7 +672,8 @@ ReactDOM.render(
 );
 
 ReactDOM.render(
-  <Modal_Coupler intention = {-browser_window.outerWidth}
+  <Modal_Coupler flag = {0}
+                 intention = {-browser_window.outerWidth}
                  transition = "left 2s"/>,
   document.getElementsByClassName('modal-coupler')[0]
 );
