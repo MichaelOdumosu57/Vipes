@@ -56,8 +56,9 @@ const menus = ["HOME",
 
 
     function positioning(a,b,c){
-      // console.log(a,b,c)
-      return a ==b ? 0 : a < b  && ( c == a ) ?  browser_window.outerWidth.toString() + "px" : 0
+      console.log(a,b,c,pictures.length)
+      console.log(a ==b ? 0 : a < b  && ( c == a )  || a == pictures.length -1 && c == 0?  browser_window.outerWidth.toString() + "px" : 0)
+      return a ==b ? 0 : a < b  && ( c == a )  || a == pictures.length -1 && c == 8?  browser_window.outerWidth.toString() + "px" : 0
 
     }
 
@@ -99,7 +100,7 @@ const menus = ["HOME",
 
             }
             reset_left (a,b){
-              return a < b ? -browser_window.outerWidth: 0
+              return a < b  || b == 0 ? -browser_window.outerWidth: 0
             }
 
             display_update(event){
@@ -139,7 +140,7 @@ const menus = ["HOME",
 
                       ReactDOM.render(
                         this.state.modalMount ? (<Modal_Coupler
-                                       ref = {(div) => {this.state.intention = 0;}}
+
                                        move = {this.state.modal_divs[this.state.question[0]]}
                                        replace = {this.state.modal_divs[this.state.question[1]]}
                                        intention ={this.reset_left(this.state.question[0],this.state.question[1])}
@@ -221,7 +222,7 @@ const menus = ["HOME",
                   )
                 })
 
-                console.log("where it should start",this.state.question[0] <this.state.question[1] ? -browser_window.outerWidth: 0)
+                console.log("where it should start",this.reset_left(this.state.question[0],this.state.question[1]))
 
                   // var x = 2;
                   // while(this.setState.modalMount != true || x != 0){
