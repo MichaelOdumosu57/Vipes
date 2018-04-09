@@ -45,6 +45,10 @@
     -moz-osx-font-smoothing: grayscale
 }
 
+/* universal */
+          body{
+            /* overflow-x: hidden; */
+          }
 
 
 

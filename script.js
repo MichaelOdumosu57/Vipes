@@ -62,6 +62,9 @@ const menus = ["HOME",
 
     }
 
+    function reset_left (a,b){
+      return (a < b && b != pictures.length - 1)  || b == 0 ? -browser_window.outerWidth: 0
+    }
 
 
     class Carousel extends React.Component {
@@ -84,7 +87,7 @@ const menus = ["HOME",
 
         this.item_change = this.item_change.bind(this)
         this.display_update = this.display_update.bind(this)
-        this.reset_left = this.reset_left.bind(this)
+
         this.replace_modal = this.replace_modal.bind(this)
         this.stop_the_bug = this.stop_the_bug.bind(this)
         this.animate = this.animate.bind(this)
@@ -99,9 +102,7 @@ const menus = ["HOME",
 
 
             }
-            reset_left (a,b){
-              return a < b  || b == 0 ? -browser_window.outerWidth: 0
-            }
+
 
             display_update(event){
               console.log(event.target.classList[1])
@@ -143,8 +144,9 @@ const menus = ["HOME",
 
                                        move = {this.state.modal_divs[this.state.question[0]]}
                                        replace = {this.state.modal_divs[this.state.question[1]]}
-                                       intention ={this.reset_left(this.state.question[0],this.state.question[1])}
+                                       intention ={reset_left(this.state.question[0],this.state.question[1])}
                                        transition ="left 2s"
+                                       question = {this.state.question}
                                        flag = {this.state.flag}
                                        sliding = {() => this.sliders}/>  ):   null,
                         document.getElementsByClassName('modal-coupler')[0]
@@ -222,7 +224,7 @@ const menus = ["HOME",
                   )
                 })
 
-                console.log("where it should start",this.reset_left(this.state.question[0],this.state.question[1]))
+                console.log("where it should start",reset_left(this.state.question[0],this.state.question[1]))
 
                   // var x = 2;
                   // while(this.setState.modalMount != true || x != 0){
@@ -329,7 +331,7 @@ const menus = ["HOME",
       constructor(props) {
         super(props);
         this.state = {
-                      left:this.props.intention,
+                      left:reset_left(this.props.question[0],this.props.question[1]),
                       slider:this.props.transition,
                       flag:this.props.flag
                      }
@@ -373,7 +375,7 @@ const menus = ["HOME",
         if(document.getElementsByClassName("difference")[0] != null){
           console.log(document.getElementsByClassName("difference")[0])
             this.setState({
-              left:0,
+              left:-browser_window.outerWidth,
               flag:0
             })
             console.log(this.state.left)
@@ -465,31 +467,56 @@ const menus = ["HOME",
               }
 
 
-
-
-              // console.log(this.state.display, this.state.zIndex,"current page")
-
-
           }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           handchangeLeft(){
+             // console.log(this.props.pic)
+
+
+                      this.setState({
+                        display:this.state.display == 0 ? this.props.total - 1 : this.state.display - 1,
+                        dir:"left"
+
+
+                      })
+
+
+                      if((this.state.screens  < 0 ? this.props.total - 1 : this.state.screens  ) == this.state.display ){
+                        // prev item might have to use a coupler to keep two pages on top
+
+                        console.log(this.state.screens,  this.state.display, "so i  move left ?")
+
+
+
+
+
+                        console.log("see me left",this.state.screens == this.props.total -1 ? 0: this.state.screens  +1 ,this.state.screens,this.state.dir )
+                        this.props.coupler(this.state.screens == this.props.total -1 ? 0: this.state.screens  +1,this.state.screens,this.state.dir )
+
+                      }
+
+
+
+
+                      // console.log(this.state.display, this.state.zIndex,"current page")
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          changeLeft(){
             // console.log(this.props.pic)
 
               this.setState({
@@ -615,7 +642,7 @@ const menus = ["HOME",
       }
       render (){
         return (
-            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font" }} onClick = {this.changeLeft}>
+            <a className = {" carousel-control"} style ={{fontFamily: "bootstrap_font" }} onClick = {this.props.unmount}>
               <span className = {"glyphicon glyphicon-chevron-left"} aria-hidden={"true"} style =  {{
                   top:"50%",
                   color:"red",
@@ -654,7 +681,14 @@ const menus = ["HOME",
       }
     }
 
+function set_x(){
+  return 0
 
+}
+function event_x(){
+  document.getElementsByClassName('carousel-control')[0].addEventListener("click",set_x)
+
+}
 
 
 ReactDOM.render(
