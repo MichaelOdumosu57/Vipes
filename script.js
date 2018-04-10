@@ -272,7 +272,12 @@ const menus = ["HOME",
                 )
 
               })
-
+              ReactDOM.render(
+                <Modal_Coupler flag = {0}
+                               intention = {-browser_window.outerWidth}
+                               transition = "left 2s"/>,
+                document.getElementsByClassName('modal-coupler')[0]
+              );
             }
 
             componentWillUnmount(){
@@ -349,6 +354,7 @@ const menus = ["HOME",
       componentDidMount(){
 
         document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.wait_for_click)
+        document.getElementsByClassName("carousel-control")[0].addEventListener("click", this.wait_for_click)
           console.log(this.props.transition,this.props.intention)
       }
 
@@ -357,6 +363,7 @@ const menus = ["HOME",
       // }
       componentWillUnmount(){
           document.getElementsByClassName("carousel-control")[1].removeEventListener("click", this.wait_for_click)
+          document.getElementsByClassName("carousel-control")[0].removeEventListener("click", this.wait_for_click)
       }
 
       wait_for_click(){
@@ -375,7 +382,7 @@ const menus = ["HOME",
         if(document.getElementsByClassName("difference")[0] != null){
           console.log(document.getElementsByClassName("difference")[0])
             this.setState({
-              left:-browser_window.outerWidth,
+              left: this.state.left == 0 ? -browser_window.outerWidth : 0,
               flag:0
             })
             console.log(this.state.left)
@@ -706,12 +713,7 @@ ReactDOM.render(
   document.getElementsByClassName('navigation')[0]
 );
 
-ReactDOM.render(
-  <Modal_Coupler flag = {0}
-                 intention = {-browser_window.outerWidth}
-                 transition = "left 2s"/>,
-  document.getElementsByClassName('modal-coupler')[0]
-);
+
 
 
 // ReactDOM.render(
