@@ -633,7 +633,7 @@ const menus = ["HOME",
                   position:"absolute",
                   top:"65%",
                   left:"30%",
-                  zIndex:5
+                  zIndex:100
 
                 }}>
                 {nav_menu}
@@ -715,14 +715,16 @@ ReactDOM.render(
 );
 
 ReactDOM.render(
+  <Navigation links ={ menus}  />,
+  document.getElementsByClassName('navigation')[0]
+);
+
+ReactDOM.render(
   <Carousel />,
   document.getElementsByClassName('carousel')[0]
 );
 
-ReactDOM.render(
-  <Navigation links ={ menus}  />,
-  document.getElementsByClassName('navigation')[0]
-);
+
 
 
 
@@ -731,7 +733,7 @@ ReactDOM.render(
 //   <LeftArrow />,
 //   document.getElementsByClassName('LeftArrow')[0]
 // );
-
+//
 // ReactDOM.render(
 //   <RightArrow />,
 //   document.getElementsByClassName('RightArrow')[0]
