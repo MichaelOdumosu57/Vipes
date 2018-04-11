@@ -58,8 +58,17 @@ const menus = ["HOME",
     function positioning(a,b,c){
       console.log(a,b,c,pictures.length)
       // work on sending replace to browser_window.outerWidth
-      console.log(a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == 8 ?   browser_window.outerWidth.toString() + "px" : 0)
-      return a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == 8 || (b ==  pictures.length -1 && c ==  pictures.length -1 ) ?   browser_window.outerWidth.toString() + "px" : 0
+      // interesting control function shouuld not have started it like this but you know react is stubborn and it likes this type of conditionall
+      // my logic was for making this carousel work, if one conditional made a difference focus on changing the conditional
+      // test your code for each conditional you add
+      // if everything made the function return false then apply an || statement
+      // this is only consecutive carousel, else please write another function :)
+      // console.log(a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == 8 || (b ==  pictures.length -1 && c ==  pictures.length -1 && c!= b ) ?   browser_window.outerWidth.toString() + "px" : 0)
+      // console.log(a == b)
+      // console.log(a < b)
+      // console.log( c == a && b != pictures.length -1  ,   b ==  pictures.length -1 &&  c==  pictures.length -2  )
+      console.log(a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1  ?   browser_window.outerWidth.toString() + "px" : (a == 0 && b == pictures.length -1 && c == 0 || a > b) ? browser_window.outerWidth.toString() + "px" : 0  )
+      return a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1  ?   browser_window.outerWidth.toString() + "px" : (a == 0 && b == pictures.length -1 && c != 0   ) ? browser_window.outerWidth.toString() + "px" : a > b && a != c && (a == pictures.length -1 && b == pictures.length -2  ) ? browser_window.outerWidth.toString() + "px" : 0
 
     }
 
