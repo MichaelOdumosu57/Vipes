@@ -67,8 +67,8 @@ const menus = ["HOME",
       // console.log(a == b)
       // console.log(a < b)
       // console.log( c == a && b != pictures.length -1  ,   b ==  pictures.length -1 &&  c==  pictures.length -2  )
-      console.log(a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1  ?   browser_window.outerWidth.toString() + "px" : (a == 0 && b == pictures.length -1 && c == 0 || a > b) ? browser_window.outerWidth.toString() + "px" : 0  )
-      return a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1  ?   browser_window.outerWidth.toString() + "px" : (a == 0 && b == pictures.length -1 && c != 0   ) ? browser_window.outerWidth.toString() + "px" : a > b && a != c && (a == pictures.length -1 && b == pictures.length -2  ) ? browser_window.outerWidth.toString() + "px" : 0
+      console.log(a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1 && b != pictures.length -2   ?   1 : (a == 0 && b == pictures.length -1 && c != 0   ) ? 2 : a > b && a != c || (a == pictures.length -1 && b == pictures.length -2  || b == 0) ? 3 : 0)
+      return a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1 && b != pictures.length -2   ?   browser_window.outerWidth.toString() + "px" : (a == 0 && b == pictures.length -1 && c != 0   ) ? browser_window.outerWidth.toString() + "px" : a > b && a != c && b != 0 || (a == pictures.length -1 && b == pictures.length -2 && c !=  pictures.length -1 ) ? browser_window.outerWidth.toString() + "px" : 0
 
     }
 
