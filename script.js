@@ -283,7 +283,7 @@ const menus = ["HOME",
                 )
 
               })
-              ReactDOM.render(
+              ReactDOM.createPortal(
                 <Modal_Coupler flag = {0}
                                intention = {-browser_window.outerWidth}
                                transition = "left 2s"/>,
@@ -714,10 +714,6 @@ ReactDOM.render(
   document.getElementsByClassName('title')[0]
 );
 
-ReactDOM.render(
-  <Navigation links ={ menus}  />,
-  document.getElementsByClassName('navigation')[0]
-);
 
 ReactDOM.render(
   <Carousel />,
@@ -725,6 +721,10 @@ ReactDOM.render(
 );
 
 
+ReactDOM.render(
+  <Navigation links ={ menus}  />,
+  document.getElementsByClassName('navigation')[0]
+);
 
 
 
