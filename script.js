@@ -72,9 +72,12 @@ const menus = ["HOME",
 
     }
 
-    function reset_left (a,b){
+    function reset_left (a,b,item){
+      console.log(item,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh", item ==  "glyphicon-chevron-left" )
+
+      item = item ==  "glyphicon-chevron-left" ?  0 : (a < b && b != pictures.length - 1 || a == pictures.length - 2 && b !=  pictures.length - 3)  || b == 0 && a != 1  ? -browser_window.outerWidth: 0
       console.log((a < b && b != pictures.length - 1 || a == pictures.length - 2)  || b == 0 ? -browser_window.outerWidth: 0)
-      return (a < b && b != pictures.length - 1 || a == pictures.length - 2 && b !=  pictures.length - 3)  || b == 0 && a != 1  ? -browser_window.outerWidth: 0
+      return item
     }
 
 
@@ -82,7 +85,7 @@ const menus = ["HOME",
       constructor(props) {
         super(props);
         this.state = {
-                      left:"0px",
+                      left:-browser_window.outerWidth,
                       divs:[],
                       modal_divs:[],
                       pictures: pictures,
@@ -90,7 +93,8 @@ const menus = ["HOME",
                       question: [0,0],
                       modalMount: false,
                       initMount:0,
-                      flag:0
+                      flag:0,
+                      item: null
 
 
                         };
@@ -98,7 +102,7 @@ const menus = ["HOME",
 
         this.item_change = this.item_change.bind(this)
         this.display_update = this.display_update.bind(this)
-
+        this.set_position = this.set_position.bind(this)
         this.replace_modal = this.replace_modal.bind(this)
         this.stop_the_bug = this.stop_the_bug.bind(this)
         this.animate = this.animate.bind(this)
@@ -120,7 +124,8 @@ const menus = ["HOME",
               if(event.target.classList[1] == "glyphicon-chevron-right"){
                   console.log("executeds")
                   this.setState({
-                    display:this.state.display + 1
+                    display:this.state.display + 1,
+                    left: 0
                   })
               }
               else{
@@ -141,12 +146,12 @@ const menus = ["HOME",
             }
 
 
-            stop_the_bug(){
+            stop_the_bug(item){
 
               var x = 2;
 
               while(this.state.modalMount != true || x != 0){
-                  console.log(this.state.modalMount,x)
+                  console.log(this.state.modalMount,x,this.state.item)
                   // if(this.state.initMount == 0){
 
 
@@ -155,11 +160,12 @@ const menus = ["HOME",
 
                                        move = {this.state.modal_divs[this.state.question[0]]}
                                        replace = {this.state.modal_divs[this.state.question[1]]}
-                                       intention ={reset_left(this.state.question[0],this.state.question[1])}
+                                       intention ={reset_left(this.state.question[0],this.state.question[1],this.state.item)}
                                        transition ="left 2s"
                                        question = {this.state.question}
                                        flag = {this.state.flag}
-                                       sliding = {() => this.sliders}/>  ):   null,
+                                       sliding = {() => this.sliders}
+                                       init_position_set = {this.set_position}/>  ):   null,
                         document.getElementsByClassName('modal-coupler')[0]
                       );
                       this.setState({
@@ -208,7 +214,7 @@ const menus = ["HOME",
             item_change(move,replace,dir){
                 console.log("preparing component coupling")
                 console.log("Components Requested")
-                // console.log(browser_window.outerWidth)
+                console.log(this.state.item)
                 console.log(move,replace)
 
 
@@ -229,7 +235,8 @@ const menus = ["HOME",
                        total = {this.state.pictures.length}
                        did_change = {this.state.display}
                        coupler = {this.item_change}
-                       screens ={index }/>
+                       screens ={index }
+                       init_position_set = {this.set_position}/>
 
 
                   )
@@ -256,12 +263,28 @@ const menus = ["HOME",
                   // }
 
                   // this.state.initMount == 0 ? setTimeout(this.stop_the_bug,50)  :  setTimeout(this.stop_the_bug,50)
-                    setTimeout(this.stop_the_bug,50)
+                    setTimeout(this.stop_the_bug,50,this.state.item)
                 // it can exist in the carouselif React renders it
 
 
              }
 
+            set_position(item){
+              // helps wait_by_click by receiving position info from child, sends its self as a props to update the state hence update child prop
+
+              this.setState({item : item})
+            }
+
+             // wait_for_click(event){
+             //   // this function is for the modal coupler because the only way to set the init state of a child is from a prop of the parent
+             //   //  since react does not know which arrow the user will press to make the inital position dynamic the function must begin in the parent and
+             //   // value returned as a prop to the child bind this function to the modal_coupler child
+             //   this.setState({
+             //     flag:1,
+             //     click_info: event.target.attributes["0"].value
+             //   })
+             //
+             // }
             componentDidMount(){
               document.getElementsByClassName("carousel-control")[0].addEventListener("click", this.display_update)
               document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.display_update)
@@ -277,7 +300,8 @@ const menus = ["HOME",
                      total = {this.state.pictures.length}
                      did_change = {this.state.display}
                      coupler = {this.item_change}
-                     screens ={index }/>
+                     screens ={index }
+                     init_position_set = {this.set_position}/>
 
 
                 )
@@ -285,8 +309,10 @@ const menus = ["HOME",
               })
               ReactDOM.render(
                 <Modal_Coupler flag = {0}
-                               intention = {reset_left(this.state.question[0],this.state.question[1])}
-                               transition = "left 2s"/>,
+                               intention = {reset_left(this.state.question[0],this.state.question[1],this.state.item)}
+                               transition = "left 2s"
+
+                               />,
                 document.getElementsByClassName('modal-coupler')[0]
               );
 
@@ -353,7 +379,8 @@ const menus = ["HOME",
                       // left:reset_left(this.props.question[0],this.props.question[1]),
                       left: this.props.intention,
                       slider:this.props.transition,
-                      flag:this.props.flag
+                      flag:this.props.flag,
+                      click_info: null
                      }
 
         this.sliding_items = this.sliding_items.bind(this)
@@ -383,23 +410,27 @@ const menus = ["HOME",
       }
 
       wait_for_click(event){
-        event.target.attributes["0"].value == "glyphicon glyphicon-chevron-left" ? this.setState({left : 0}) : null
+
         this.setState({
-          flag:1
+          flag:1,
+          click_info: event.target.classList[1]
         })
+
       }
 
       just_to_set(){
         console.log("move!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         // clearTimeout()
         // console.log(this)
+
         setTimeout(this.sliding_items,100)
       }
       sliding_items(){
         if(document.getElementsByClassName("difference")[0] != null){
           console.log(document.getElementsByClassName("difference")[0])
+
             this.setState({
-              left: this.state.left == 0 ? -browser_window.outerWidth : 0,
+              left:  this.state.left == 0 ? -browser_window.outerWidth : 0,
               flag:0
             })
             console.log(this.state.left)
@@ -462,7 +493,7 @@ const menus = ["HOME",
 
           }
 
-          handchangeRight(){
+          handchangeRight(event){
 
             // console.log(this.props.pic)
 
@@ -477,6 +508,7 @@ const menus = ["HOME",
 
 
               if((this.state.screens > this.props.total - 1 ? 0 : this.state.screens  ) == this.state.display ){
+                this.props.init_position_set(event.target.classList[1])
                 // prev item might have to use a coupler to keep two pages on top
 
                 console.log(this.state.screens,  this.state.display, "so i  move right ?")
@@ -494,9 +526,8 @@ const menus = ["HOME",
           }
 
 
-          handchangeLeft(){
+          handchangeLeft(event){
              // console.log(this.props.pic)
-
 
                       this.setState({
                         display:this.state.display == 0 ? this.props.total - 1 : this.state.display - 1,
@@ -508,7 +539,19 @@ const menus = ["HOME",
 
                       if((this.state.screens  < 0 ? this.props.total - 1 : this.state.screens  ) == this.state.display ){
                         // prev item might have to use a coupler to keep two pages on top
+                        ReactDOM.render(
+                          null,
+                          document.getElementsByClassName('modal-coupler')[0]
+                        );
+                        ReactDOM.render(
+                          <Modal_Coupler flag = {1}
+                                         intention = {0}
+                                         transition = "left 2s"
 
+                                         />,
+                          document.getElementsByClassName('modal-coupler')[0]
+                        );
+                        this.props.init_position_set(event.target.classList[1])
                         console.log(this.state.screens,  this.state.display, "so i  move left ?")
 
 
