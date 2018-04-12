@@ -311,6 +311,7 @@ const menus = ["HOME",
                 <Modal_Coupler flag = {0}
                                intention = {reset_left(this.state.question[0],this.state.question[1],this.state.item)}
                                transition = "left 2s"
+                               move = {this.state.divs[0]}
 
                                />,
                 document.getElementsByClassName('modal-coupler')[0]
@@ -539,18 +540,22 @@ const menus = ["HOME",
 
                       if((this.state.screens  < 0 ? this.props.total - 1 : this.state.screens  ) == this.state.display ){
                         // prev item might have to use a coupler to keep two pages on top
-                        ReactDOM.render(
-                          null,
-                          document.getElementsByClassName('modal-coupler')[0]
-                        );
-                        ReactDOM.render(
-                          <Modal_Coupler flag = {1}
-                                         intention = {0}
-                                         transition = "left 2s"
+                        if(this.state.screens == this.props.total - 1){
+                          // this is also how the coupler starts
+                          // try to mount the inital img component item to avoid that snap replace
+                            ReactDOM.render(
+                              null,
+                              document.getElementsByClassName('modal-coupler')[0]
+                            );
+                            ReactDOM.render(
+                              <Modal_Coupler flag = {1}
+                                             intention = {0}
+                                             transition = "left 2s"
 
-                                         />,
-                          document.getElementsByClassName('modal-coupler')[0]
-                        );
+                                             />,
+                              document.getElementsByClassName('modal-coupler')[0]
+                            );
+                        }
                         this.props.init_position_set(event.target.classList[1])
                         console.log(this.state.screens,  this.state.display, "so i  move left ?")
 
