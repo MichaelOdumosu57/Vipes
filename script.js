@@ -68,7 +68,7 @@ const menus = ["HOME",
       // console.log(a < b)
       // console.log( c == a && b != pictures.length -1  ,   b ==  pictures.length -1 &&  c==  pictures.length -2  )
       console.log(a ==b ? -1 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1 && b != pictures.length -2   ?  1: (a == 0 && b == pictures.length -1 && c != 0   ) ? 2 : a > b && a != c && c != 0 && a!= 1  || (a == pictures.length -1 && b == pictures.length -2 && c !=  pictures.length -1 ) ? 3 : 0)
-      return a ==b ? 0 : a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1 && b != pictures.length -2   ?   browser_window.outerWidth.toString() + "px" : (a == 0 && b == pictures.length -1 && c != 0   ) ? browser_window.outerWidth.toString() + "px" : a > b && a != c && (c != 0 || a == 1)  || (a == pictures.length -1 && b == pictures.length -2 && c !=  pictures.length -1 )  ? browser_window.outerWidth.toString() + "px" : 0
+      return a ==b ? 0: a < b  && ( c == a && b != pictures.length -1  ||   b ==  pictures.length -1 &&  c==  pictures.length -2 )  || a == pictures.length -1 && c == pictures.length -1 && b != pictures.length -2   ?   browser_window.outerWidth.toString() + "px" : (a == 0 && b == pictures.length -1 && c != 0   ) ? browser_window.outerWidth.toString() + "px" : a > b && a != c && (c != 0 || a == 1)  || (a == pictures.length -1 && b == pictures.length -2 && c !=  pictures.length -1 )  ? browser_window.outerWidth.toString() + "px" : 0
 
     }
 
@@ -283,12 +283,13 @@ const menus = ["HOME",
                 )
 
               })
-              ReactDOM.createPortal(
+              ReactDOM.render(
                 <Modal_Coupler flag = {0}
-                               intention = {-browser_window.outerWidth}
+                               intention = {reset_left(this.state.question[0],this.state.question[1])}
                                transition = "left 2s"/>,
                 document.getElementsByClassName('modal-coupler')[0]
               );
+
             }
 
             componentWillUnmount(){
@@ -297,6 +298,7 @@ const menus = ["HOME",
             }
 
             render(){
+
 
               return(
 
@@ -307,6 +309,7 @@ const menus = ["HOME",
                       <div id ="index" className = "modal-coupler"></div>
                     </React.Fragment>
                 )
+
             }
 
 
@@ -347,7 +350,8 @@ const menus = ["HOME",
       constructor(props) {
         super(props);
         this.state = {
-                      left:reset_left(this.props.question[0],this.props.question[1]),
+                      // left:reset_left(this.props.question[0],this.props.question[1]),
+                      left: this.props.intention,
                       slider:this.props.transition,
                       flag:this.props.flag
                      }
@@ -367,6 +371,7 @@ const menus = ["HOME",
         document.getElementsByClassName("carousel-control")[1].addEventListener("click", this.wait_for_click)
         document.getElementsByClassName("carousel-control")[0].addEventListener("click", this.wait_for_click)
           console.log(this.props.transition,this.props.intention)
+
       }
 
       // componentWillReceiveProps(){
@@ -377,7 +382,8 @@ const menus = ["HOME",
           document.getElementsByClassName("carousel-control")[0].removeEventListener("click", this.wait_for_click)
       }
 
-      wait_for_click(){
+      wait_for_click(event){
+        event.target.attributes["0"].value == "glyphicon glyphicon-chevron-left" ? this.setState({left : 0}) : null
         this.setState({
           flag:1
         })
@@ -418,7 +424,7 @@ const menus = ["HOME",
                         position:"absolute",
                         height:"100%",
                         width:browser_window.outerWidth * 2,
-                        top:0,
+                        top:-100,
                         transition:this.state.slider,
                         zIndex:4
 
@@ -725,6 +731,7 @@ ReactDOM.render(
   <Navigation links ={ menus}  />,
   document.getElementsByClassName('navigation')[0]
 );
+
 
 
 
