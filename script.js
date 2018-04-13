@@ -94,7 +94,17 @@ const menus = ["HOME",
                       modalMount: false,
                       initMount:0,
                       flag:0,
-                      item: null
+                      item: null,
+                      init_modal_cmp:(<Modal_Coupler
+
+
+                                     move = {this.props.move}
+                                     intention ={0}
+                                     transition ="left 2s"
+                                     question = {[0,8]}
+                                     flag = {1}
+                                     sliding = {() => this.sliders}
+                                     init_position_set = {this.set_position}/>)
 
 
                         };
@@ -236,6 +246,7 @@ const menus = ["HOME",
                        did_change = {this.state.display}
                        coupler = {this.item_change}
                        screens ={index }
+                       init_show = {this.state.init_modal_cmp}
                        init_position_set = {this.set_position}/>
 
 
@@ -301,6 +312,7 @@ const menus = ["HOME",
                      did_change = {this.state.display}
                      coupler = {this.item_change}
                      screens ={index }
+                     init_show = {this.state.init_modal_cmp}
                      init_position_set = {this.set_position}/>
 
 
@@ -548,11 +560,7 @@ const menus = ["HOME",
                               document.getElementsByClassName('modal-coupler')[0]
                             );
                             ReactDOM.render(
-                              <Modal_Coupler flag = {1}
-                                             intention = {0}
-                                             transition = "left 2s"
-
-                                             />,
+                              this.props.init_show,
                               document.getElementsByClassName('modal-coupler')[0]
                             );
                         }
@@ -762,6 +770,16 @@ function event_x(){
 
 }
 
+let init_mod_state = <Carousel_Item
+                     top = {"0px"}
+                     left = {0}
+                     key = {'./photos/beach.jpeg'}
+                     pic = {'./photos/beach.jpeg'}
+                     total = {pictures.length}
+                     did_change = {0}
+
+                     screens ={0 }
+                     />
 
 ReactDOM.render(
   <Title sideface = "Overall"/>,
@@ -770,7 +788,7 @@ ReactDOM.render(
 
 
 ReactDOM.render(
-  <Carousel />,
+  <Carousel move = {init_mod_state} />,
   document.getElementsByClassName('carousel')[0]
 );
 
